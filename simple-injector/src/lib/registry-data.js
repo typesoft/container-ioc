@@ -1,8 +1,11 @@
-class RegistryData {
-    constructor(constructor) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var RegistryData = (function () {
+    function RegistryData(constructor) {
         this.constructor = constructor;
         this.instance = null;
     }
-}
-
-module.exports = RegistryData;
+    return RegistryData;
+}());
+exports.RegistryData = RegistryData;
+//# sourceMappingURL=registry-data.js.map

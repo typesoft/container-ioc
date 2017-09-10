@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": { "test": "jasmine" },
+  "scripts": {
+    "test": "mocha --reporter dot -w './**/*.spec.js'"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thohoh/ioc.git"
@@ -16,6 +18,10 @@
   },
   "homepage": "https://github.com/thohoh/ioc#readme",
   "devDependencies": {
-    "jasmine": "^2.8.0"
+    "chai": "^4.1.2",
+    "mocha": "^3.5.2"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.10"
   }
 }

@@ -1,13 +1,22 @@
-let container = require('../lib/container');
-
-class App {
-    constructor() {
-        this.service = container.resolve('IService');
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var decorators_1 = require("../lib/decorators");
+var App = (function () {
+    function App() {
     }
-
-    run() {
-        this.service.connect();
-    }
-}
-
-module.exports = App;
+    App.prototype.run = function () {
+        console.log('running the app');
+    };
+    App = __decorate([
+        decorators_1.Injectable()
+    ], App);
+    return App;
+}());
+exports.App = App;
+//# sourceMappingURL=app.js.map
