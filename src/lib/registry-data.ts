@@ -1,3 +1,8 @@
+export interface IRegistryData {
+    instance: any;
+    cls: any;
+}
+
 export class RegistryData {
     public instance: any;
 

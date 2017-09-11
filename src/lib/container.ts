@@ -1,7 +1,8 @@
-import { IInjectionMd, IProvider } from './interfaces';
-import { RegistryData } from './registry-data';
-import { INJECTIONS_MD_KEY } from './decorators';
 import 'reflect-metadata';
+
+import { IInjectionMd, IProvider } from './interfaces';
+import { IRegistryData, RegistryData } from './registry-data';
+import { INJECTIONS_MD_KEY } from './decorators';
 
 export class Container {
     private registry: Map = new Map();
@@ -18,7 +19,6 @@ export class Container {
         let token: any;
         let cls: any;
 
-        // TODO add input data validation
         if (typeof provider === 'function') {
             token = provider;
             cls = provider;
@@ -32,7 +32,7 @@ export class Container {
     }
 
     public resolve(token: string|any): any {
-        let registryData = this.registry.get(token);
+        let registryData: IRegistryData = this.registry.get(token);
 
         if (!registryData) {
             throw new Error(`No provider for ${token}`);
@@ -48,11 +48,12 @@ export class Container {
 
         let args: any[] = [];
         injectionsMd.forEach((injection: IInjectionMd, index) => {
-            args[injection.paramIndex] = resolvedInjections[index];
+            args[injection.parameterIndex] = resolvedInjections[index];
         });
 
         registryData.instance = new cls(...args);
         this.registry.set(token, registryData);
+
         return registryData.instance;
     }
 

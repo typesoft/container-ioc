@@ -4,6 +4,6 @@ export interface IProvider {
 }
 
 export interface IInjectionMd {
-    paramIndex: number;
     token: any;
+    parameterIndex: number;
 }

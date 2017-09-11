@@ -9,7 +9,7 @@ export function Inject(token: any) {
 
         injections.push({
             token,
-            paramIndex: parameterIndex
+            parameterIndex: parameterIndex
         });
 
         Reflect.defineMetadata(INJECTIONS_MD_KEY, injections, target);
