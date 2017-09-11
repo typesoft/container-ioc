@@ -1,9 +1,15 @@
-import { Injectable } from '../lib/decorators';
+import { Inject } from '../lib/decorators';
+import { Service } from './service';
 
-@Injectable()
 export class App {
 
+    constructor(
+        @Inject(Service) private service: Service
+    ) {
+
+    }
+
     public run(): void {
-        console.log('running the app');
+        this.service.log('running the app');
     }
 }

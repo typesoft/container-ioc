@@ -1,6 +1,8 @@
 import { App } from './app/app';
-import { Container } from './lib/container';
+import { container } from './lib/container';
+import { APP_PROVIDERS } from './app/providers';
 
-let container: Container = new Container();
+container.register(APP_PROVIDERS);
 
-container.resolve(App);
+let app: App = container.resolve(App);
+app.run();

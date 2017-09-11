@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RegistryData = (function () {
-    function RegistryData(constructor) {
-        this.constructor = constructor;
+    function RegistryData(cls) {
+        this.cls = cls;
         this.instance = null;
     }
     return RegistryData;

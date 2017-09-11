@@ -5,16 +5,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorators_1 = require("../lib/decorators");
+var service_1 = require("./service");
 var App = (function () {
-    function App() {
+    function App(service) {
+        this.service = service;
     }
     App.prototype.run = function () {
-        console.log('running the app');
+        this.service.log('running the app');
     };
     App = __decorate([
-        decorators_1.Injectable()
+        __param(0, decorators_1.Inject(service_1.Service))
     ], App);
     return App;
 }());

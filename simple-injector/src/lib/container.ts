@@ -1,11 +1,10 @@
-import { IProvider } from './interfaces';
+import { IInjectionMd, IProvider } from './interfaces';
 import { RegistryData } from './registry-data';
+import { INJECTIONS_MD_KEY } from './decorators';
+import 'reflect-metadata';
 
 export class Container {
     private registry: Map = new Map();
-
-    constructor() {
-    }
 
     public register(provider: IProvider|IProvider[]) {
         if (provider instanceof Array) {
@@ -17,22 +16,22 @@ export class Container {
 
     public registerOne(provider: IProvider) {
         let token: any;
-        let constructorClass: any;
+        let cls: any;
 
         // TODO add input data validation
         if (typeof provider === 'function') {
             token = provider;
-            constructorClass = provider;
+            cls = provider;
         } else {
             token = provider.token;
-            constructorClass = provider.useClass;
+            cls = provider.useClass;
         }
 
-        let registryData = new RegistryData(provider.useClass);
-        this.registry.set(provider.token, registryData);
+        let registryData = new RegistryData(cls);
+        this.registry.set(token, registryData);
     }
 
-    public resolve(token: string|any) {
+    public resolve(token: string|any): any {
         let registryData = this.registry.get(token);
 
         if (!registryData) {
@@ -43,10 +42,23 @@ export class Container {
             return registryData.instance;
         }
 
-        let constructor = registryData.constructor;
-        registryData.instance = new constructor();
-        this.registry.set(token, registryData);
+        let cls = registryData.cls;
+        let injectionsMd: IInjectionMd[] = this.getInjections(cls);
+        let resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
 
+        let args: any[] = [];
+        injectionsMd.forEach((injection: IInjectionMd, index) => {
+            args[injection.paramIndex] = resolvedInjections[index];
+        });
+
+        registryData.instance = new cls(...args);
+        this.registry.set(token, registryData);
         return registryData.instance;
     }
+
+    public getInjections(cls: any): IInjectionMd[] {
+        return Reflect.getOwnMetadata(INJECTIONS_MD_KEY, cls) || [];
+    }
 }
+
+export let container: Container = new Container();
