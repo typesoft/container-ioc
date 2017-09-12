@@ -9,3 +9,7 @@ export interface IInjectionMd {
     token: ProviderToken;
     parameterIndex: number;
 }
+
+export interface IInjectionInstance {
+
+}

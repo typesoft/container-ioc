@@ -1,5 +1,7 @@
+import { IInjectionInstance } from './interfaces';
+
 export interface IRegistryData {
-    instance: any;
+    instance: IInjectionInstance;
     cls: any;
 }
 
