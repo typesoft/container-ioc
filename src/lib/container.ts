@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { IInjectionMd, IProvider, ProviderToken } from './interfaces';
+import { IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';
 import { IContainer } from './container.interface';
@@ -8,9 +8,7 @@ import { IContainer } from './container.interface';
 export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();
 
-    constructor(private parent?: IContainer) {
-
-    }
+    constructor(private parent?: IContainer) {}
 
     public register(provider: IProvider|IProvider[]) {
         if (provider instanceof Array) {
@@ -20,7 +18,7 @@ export class Container implements IContainer {
         }
     }
 
-    public resolve(token: ProviderToken): any {
+    public resolve(token: ProviderToken): IInjectionInstance {
         let registryData: IRegistryData = this.registry.get(token);
 
         if (!registryData) {
@@ -51,8 +49,7 @@ export class Container implements IContainer {
     }
 
     public createScope(): IContainer {
-        let container: IContainer = new Container(this);
-        return container;
+        return new Container(this);
     }
 
     private registerOne(provider: IProvider) {

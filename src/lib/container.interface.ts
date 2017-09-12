@@ -1,7 +1,7 @@
-import { IProvider, ProviderToken } from './interfaces';
+import { IInjectionInstance, IProvider, ProviderToken } from './interfaces';
 
 export interface IContainer {
-    register(provider: IProvider|IProvider[]): void;
-    resolve(token: ProviderToken): void;
+    register(provider: IProvider|IProvider[]|Function): void;
+    resolve(token: ProviderToken): IInjectionInstance;
     createScope(): IContainer;
 }
