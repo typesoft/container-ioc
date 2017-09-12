@@ -72,5 +72,3 @@ export class Container implements IContainer {
         return Reflect.getOwnMetadata(INJECTIONS_MD_KEY, cls) || [];
     }
 }
-
-export let container: Container = new Container();

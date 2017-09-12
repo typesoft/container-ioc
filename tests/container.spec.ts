@@ -1,5 +1,5 @@
-import { IContainer } from './container.interface';
-import { Container } from './container';
+import { IContainer } from '../lib/container.interface';
+import { Container } from '../lib/container';
 
 import 'mocha';
 import { expect } from 'chai';

@@ -1,17 +1,19 @@
 {
-  "name": "ioc",
+  "name": "ioc-container",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "IoC container for browser and nodejs environments",
   "scripts": {
+    "build": "./node_modules/.bin/tsc",
     "test": "mocha --reporter dot -w './**/*.spec.js'"
   },
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thohoh/ioc.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Alexander Kozlov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/thohoh/ioc/issues"
@@ -21,7 +23,8 @@
     "@types/chai": "^4.0.4",
     "@types/mocha": "^2.2.43",
     "chai": "^4.1.2",
-    "mocha": "^3.5.2"
+    "mocha": "^3.5.2",
+    "typescript": "^2.5.2"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.10"
