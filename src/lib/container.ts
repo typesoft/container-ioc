@@ -3,9 +3,14 @@ import 'reflect-metadata';
 import { IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';
+import { IContainer } from './container.interface';
 
-export class Container {
+export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();
+
+    constructor(private parent?: IContainer) {
+
+    }
 
     public register(provider: IProvider|IProvider[]) {
         if (provider instanceof Array) {
@@ -15,27 +20,15 @@ export class Container {
         }
     }
 
-    public registerOne(provider: IProvider) {
-        let token: any;
-        let cls: any;
-
-        if (typeof provider === 'function') {
-            token = provider;
-            cls = provider;
-        } else {
-            token = provider.token;
-            cls = provider.useClass;
-        }
-
-        let registryData: IRegistryData = new RegistryData(cls);
-        this.registry.set(token, registryData);
-    }
-
-    public resolve(token: string|any): any {
+    public resolve(token: ProviderToken): any {
         let registryData: IRegistryData = this.registry.get(token);
 
         if (!registryData) {
-            throw new Error(`No provider for ${token}`);
+            if (this.parent) {
+                return this.parent.resolve(token);
+            } else {
+                throw new Error(`No provider for ${token}`);
+            }
         }
 
         if (registryData.instance) {
@@ -57,7 +50,28 @@ export class Container {
         return registryData.instance;
     }
 
-    public getInjections(cls: any): IInjectionMd[] {
+    public createScope(): IContainer {
+        let container: IContainer = new Container(this);
+        return container;
+    }
+
+    private registerOne(provider: IProvider) {
+        let token: any;
+        let cls: any;
+
+        if (typeof provider === 'function') {
+            token = provider;
+            cls = provider;
+        } else {
+            token = provider.token;
+            cls = provider.useClass;
+        }
+
+        let registryData: IRegistryData = new RegistryData(cls);
+        this.registry.set(token, registryData);
+    }
+
+    private getInjections(cls: any): IInjectionMd[] {
         return Reflect.getOwnMetadata(INJECTIONS_MD_KEY, cls) || [];
     }
 }
