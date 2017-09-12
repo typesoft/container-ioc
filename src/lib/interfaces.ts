@@ -1,9 +1,11 @@
+export type ProviderToken = any;
+
 export interface IProvider {
-    token: string|any;
+    token: ProviderToken
     useClass: any;
 }
 
 export interface IInjectionMd {
-    token: any;
+    token: ProviderToken;
     parameterIndex: number;
 }
