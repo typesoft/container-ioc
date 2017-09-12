@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 
-import { IInjectionMd, IProvider } from './interfaces';
+import { IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';
 
 export class Container {
-    private registry: Map = new Map();
+    private registry: Map<ProviderToken, IRegistryData> = new Map();
 
     public register(provider: IProvider|IProvider[]) {
         if (provider instanceof Array) {
@@ -27,7 +27,7 @@ export class Container {
             cls = provider.useClass;
         }
 
-        let registryData = new RegistryData(cls);
+        let registryData: IRegistryData = new RegistryData(cls);
         this.registry.set(token, registryData);
     }
 
