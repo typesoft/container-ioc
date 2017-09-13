@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "IoC container for browser and nodejs environments",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
