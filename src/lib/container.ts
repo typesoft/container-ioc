@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import { IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';

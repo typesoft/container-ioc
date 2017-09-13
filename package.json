@@ -1,5 +1,5 @@
 {
-  "name": "ioc-container",
+  "name": "container-ioc",
   "version": "1.0.0",
   "description": "IoC container for browser and nodejs environments",
   "scripts": {
@@ -23,6 +23,9 @@
     "@types/chai": "^4.0.4",
     "@types/mocha": "^2.2.43",
     "chai": "^4.1.2",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
+    "gulp-typescript": "^3.2.2",
     "mocha": "^3.5.2",
     "typescript": "^2.5.2"
   },
