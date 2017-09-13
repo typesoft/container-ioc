@@ -3,7 +3,6 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "./dist",
     "strict": true,
 
     "noImplicitAny": true,
@@ -11,7 +10,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"
