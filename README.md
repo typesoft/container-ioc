@@ -1,1 +1,1 @@
-IoC written in Typescript
+IoC Container for browser and nodejs enviroment written and Typescript.
