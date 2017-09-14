@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "IoC container for browser and nodejs environments",
   "scripts": {
     "build": "tsc -w",
@@ -21,12 +21,16 @@
   "homepage": "https://github.com/thohoh/ioc#readme",
   "devDependencies": {
     "@types/chai": "^4.0.4",
+    "@types/core-js": "^0.9.43",
     "@types/mocha": "^2.2.43",
     "chai": "^4.1.2",
     "gulp": "^3.9.1",
     "gulp-mocha": "^4.3.1",
+    "gulp-tslint": "^8.1.2",
     "gulp-typescript": "^3.2.2",
     "mocha": "^3.5.2",
+    "tslint": "^5.7.0",
+    "tslint-microsoft-contrib": "^5.0.1",
     "typescript": "^2.5.2"
   },
   "dependencies": {

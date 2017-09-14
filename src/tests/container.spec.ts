@@ -3,72 +3,74 @@ import { Container } from '../lib/index';
 
 import 'mocha';
 import { expect } from 'chai';
+import { IConstructor } from '../lib/interfaces';
 
-describe('Container', function() {
+/* tslint:disable: no-unused-expression max-classes-per-file*/
+
+describe('Container', () => {
 
     let container: IContainer;
 
-    beforeEach(function() {
+    beforeEach(() => {
         container = new Container();
     });
 
     describe('resolve()', () => {
         it('should resolve an instance of a given provider when registered with a single class literal', () => {
-            let testClass = class TestClass {};
+            const testClass: IConstructor = class TestClass {};
             container.register(testClass);
-            let instance = container.resolve(testClass);
+            const instance = container.resolve(testClass);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
 
         it('should resolve an instance of a given class when registered with a provider literal', () => {
-            let testClass = class TestClass {};
+            const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
             container.register({ token: testToken, useClass: testClass });
-            let instance = container.resolve(testToken);
+            const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
 
         it('should resolve an instance of a given when registered with array of providers/tokens', () => {
-            let testClass = class TestClass {};
+            const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
             container.register([{ token: testToken, useClass: testClass }]);
-            let instance = container.resolve(testToken);
+            const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
 
         it('should resolve with a string literal', () => {
-            let testClass = class TestClass {};
+            const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
             container.register({ token: testToken, useClass: testClass });
-            let instance = container.resolve(testToken);
+            const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
 
         it('should throw an error if provided token is not registered', () => {
-            let testClass = class TestClass {};
+            const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
             container.register([{ token: testToken, useClass: testClass }]);
 
-
-            let throwableFunc = () => container.resolve('RandomToken');
+            const throwableFunc = () => container.resolve('RandomToken');
             expect(throwableFunc).to.throw();
         });
 
         it('should look for instance in ascendant containers if it wasnt found in the current container', () => {
-            let testClass = class TestClass {};
+            const testClass: IConstructor = class TestClass {};
             container.register(testClass);
-            let childContainer = container.createScope();
-            let grandChildContainer = childContainer.createScope();
+            const childContainer = container.createScope();
+            const grandChildContainer = childContainer.createScope();
 
-            let instance = grandChildContainer.resolve(testClass);
+            const instance = grandChildContainer.resolve(testClass);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
@@ -76,7 +78,7 @@ describe('Container', function() {
 
     describe('createScope()', () => {
         it('should create child scope', () => {
-            let childContainer: any = container.createScope();
+            const childContainer: any = container.createScope();
             expect(childContainer).to.be.ok;
             expect(childContainer.parent).to.equal(container);
         });

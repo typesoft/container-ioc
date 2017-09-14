@@ -1,7 +1,7 @@
 export type ProviderToken = any;
 
 export interface IProvider {
-    token: ProviderToken
+    token: ProviderToken;
     useClass: any;
 }
 
@@ -11,5 +11,9 @@ export interface IInjectionMd {
 }
 
 export interface IInjectionInstance {
+    [key: string]: any;
+}
 
+export interface IConstructor {
+    new (...args: any[]): any;
 }
