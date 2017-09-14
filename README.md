@@ -1,9 +1,7 @@
 ## IoC Container in Typescript
 
-###API:
+###API usage:
 
-
-Instantiate container:
 ```Typescript
 import { Container, Inject } from 'container-ioc';
 
