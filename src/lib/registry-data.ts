@@ -1,8 +1,8 @@
-import { IInjectionInstance } from './interfaces';
+import { IConstructor, IInjectionInstance } from './interfaces';
 
 export interface IRegistryData {
     instance: IInjectionInstance;
-    cls: any;
+    cls: IConstructor;
 }
 
 export class RegistryData {

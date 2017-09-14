@@ -1,4 +1,4 @@
-import { IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
+import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';
 import { IContainer } from './container.interface';
@@ -8,16 +8,16 @@ export class Container implements IContainer {
 
     constructor(private parent?: IContainer) {}
 
-    public register(provider: IProvider|IProvider[]) {
+    public register(provider: IProvider|IProvider[]|IConstructor) {
         if (provider instanceof Array) {
-            provider.forEach(provider => this.registerOne(provider));
+            provider.forEach(p => this.registerOne(p));
         } else {
             this.registerOne(provider);
         }
     }
 
     public resolve(token: ProviderToken): IInjectionInstance {
-        let registryData: IRegistryData = this.registry.get(token);
+        const registryData: IRegistryData = this.registry.get(token);
 
         if (!registryData) {
             if (this.parent) {
@@ -31,11 +31,11 @@ export class Container implements IContainer {
             return registryData.instance;
         }
 
-        let cls = registryData.cls;
-        let injectionsMd: IInjectionMd[] = this.getInjections(cls);
-        let resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
+        const cls = registryData.cls;
+        const injectionsMd: IInjectionMd[] = this.getInjections(cls);
+        const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
 
-        let args: any[] = [];
+        const args: any[] = [];
         injectionsMd.forEach((injection: IInjectionMd, index) => {
             args[injection.parameterIndex] = resolvedInjections[index];
         });
@@ -50,7 +50,7 @@ export class Container implements IContainer {
         return new Container(this);
     }
 
-    private registerOne(provider: IProvider) {
+    private registerOne(provider: IProvider|IConstructor) {
         let token: any;
         let cls: any;
 
@@ -62,7 +62,7 @@ export class Container implements IContainer {
             cls = provider.useClass;
         }
 
-        let registryData: IRegistryData = new RegistryData(cls);
+        const registryData: IRegistryData = new RegistryData(cls);
         this.registry.set(token, registryData);
     }
 
