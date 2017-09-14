@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "IoC container for browser and nodejs environments",
   "scripts": {
     "build": "tsc -w",
@@ -10,15 +10,15 @@
   "types": "dist/lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thohoh/ioc.git"
+    "url": "git+https://github.com/thohoh/container-ioc.git"
   },
   "keywords": [],
   "author": "Alexander Kozlov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thohoh/ioc/issues"
+    "url": "https://github.com/thohoh/container-ioc/issues"
   },
-  "homepage": "https://github.com/thohoh/ioc#readme",
+  "homepage": "https://github.com/thohoh/container-ioc#readme",
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/core-js": "^0.9.43",
