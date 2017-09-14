@@ -31,6 +31,8 @@ let providers = [
     { token: RandomClass3, useClass: RandomClass3 }
 ];
 
+container.register(providers);
+
 
 // Resolve instances
 let instance1: RandomClass1 = container.resolve(RandomClass1);
