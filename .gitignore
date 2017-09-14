@@ -3,3 +3,4 @@ node_modules
 *.js*
 *.d.ts
 dist
+usage.js

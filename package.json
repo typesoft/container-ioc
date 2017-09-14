@@ -3,8 +3,8 @@
   "version": "1.0.1",
   "description": "IoC container for browser and nodejs environments",
   "scripts": {
-    "build": "./node_modules/.bin/tsc",
-    "test": "mocha --reporter dot -w './**/*.spec.js'"
+    "build": "tsc -w",
+    "test": "mocha --reporter dot -w 'dist/**/*.spec.js'"
   },
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",

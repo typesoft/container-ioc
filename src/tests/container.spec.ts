@@ -1,5 +1,5 @@
 import { IContainer } from '../lib/container.interface';
-import { Container } from '../lib/container';
+import { Container } from '../lib/index';
 
 import 'mocha';
 import { expect } from 'chai';
@@ -36,6 +36,16 @@ describe('Container', function() {
             const testToken = 'ITestClass';
 
             container.register([{ token: testToken, useClass: testClass }]);
+            let instance = container.resolve(testToken);
+            expect(instance).to.be.ok;
+            expect(instance instanceof testClass).to.be.true;
+        });
+
+        it('should resolve with a string literal', () => {
+            let testClass = class TestClass {};
+            const testToken = 'ITestClass';
+
+            container.register({ token: testToken, useClass: testClass });
             let instance = container.resolve(testToken);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
