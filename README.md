@@ -1,6 +1,6 @@
 ## IoC Container in Typescript
 
-###API usage:
+### API usage:
 
 ```Typescript
 import { Container, Inject } from 'container-ioc';
@@ -17,8 +17,7 @@ class RandomClass3 {
 };
 
 
-/// Use Injector decorater to inject dependencies:
-
+// Use Injector decorater to inject dependencies:
 class RandomClass2 {
     constructor(@Inject(RandomClass3) public instance3: any) {
     }
