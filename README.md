@@ -118,10 +118,10 @@ instance.doStuff(); // hello world
 ### Future:
 
 It's just a very basic version. I'm going to add more functionality to meet common use cases, such as ability 
-to mark injections in constructor with types only (typescript projects) and more handy API.
+to mark injections in constructor with types for typescript projects and more handy API.
 
 ### Contribution:
-If you want to help feel free to submit an bug or a feature request.
+If you want to help feel free to submit a bug or a feature request.
 Also leave a comment under the issue you'd like to work on.
 
 see [CONTRIBUTION.md](CONTRIBUTION.md)
