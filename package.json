@@ -1,20 +1,29 @@
 {
   "name": "container-ioc",
-  "version": "1.0.9",
-  "description": "IoC container for browser and nodejs environments",
-  "scripts": {
-    "build": "tsc -w",
-    "test": "mocha --reporter dot -w 'dist/**/*.spec.js'"
-  },
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "version": "1.1.0",
+  "description": "IoC container",
+  "author": "Alexander Kozlov",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thohoh/container-ioc.git"
   },
-  "keywords": [],
-  "author": "Alexander Kozlov",
+  "keywords": [
+    "ioc",
+    "container",
+    "dependency",
+    "di",
+    "inject",
+    "injection",
+    "inverstion of control",
+    "injector"
+  ],
   "license": "ISC",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -w",
+    "test": "mocha --reporter dot -w 'dist/**/*.spec.js'"
+  },
   "bugs": {
     "url": "https://github.com/thohoh/container-ioc/issues"
   },
