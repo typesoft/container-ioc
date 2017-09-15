@@ -1,0 +1,30 @@
+{
+  "rulesDirectory": [
+    "./node_modules/tslint-microsoft-contrib"
+  ],
+  "extends": "tslint:recommended",
+  "rules": {
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "eofline": false,
+    "max-line-length": [
+      true,
+      180
+    ],
+    "ordered-imports": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
+    "member-access": false,
+    "arrow-parens": false,
+    "object-literal-sort-keys": false,
+    "no-trailing-whitespace": false
+  }
+}
