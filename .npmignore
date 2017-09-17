@@ -1,9 +1,9 @@
 src
 node_modules
-README.md
-tsconfig.json
-.gitignore
 dist/tests
+README.md
+.gitignore
 usage.js
 gulpfile.js
 tslint.json
+tsconfig.json
