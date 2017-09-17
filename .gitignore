@@ -1,6 +1,6 @@
 node_modules
 .idea
-*.js*
+src/**/*.js*
 *.d.ts
 dist
 usage.js
