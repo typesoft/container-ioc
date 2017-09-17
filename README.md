@@ -108,7 +108,6 @@ let parentContainer = new Container();
 let childContainer = parentContainer.createScope();
 
 parentContainer.register({ token: 'ISome', useClass: SomeClass });
-childContainer.resolve('ISome');
 
 let instance = childContainer.resolve('ISome');
 instance.doStuff(); // hello world
