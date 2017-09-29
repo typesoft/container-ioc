@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2016",
     "module": "commonjs",
+    "moduleResolution": "node",
     "declaration": true,
     "strict": true,
 
     "noImplicitAny": true,
     "removeComments": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2016", "DOM"]
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
     "node_modules"
   ]

@@ -17,7 +17,7 @@ export class Container implements IContainer {
     }
 
     public resolve(token: ProviderToken): IInjectionInstance {
-        const registryData: IRegistryData = this.registry.get(token);
+        const registryData = <IRegistryData> this.registry.get(token);
 
         if (!registryData) {
             if (this.parent) {
