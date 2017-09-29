@@ -1,10 +1,5 @@
 ## Contribution guidelines
 
-### System prerequisites
-```
-gulp-cli >= 1.3.0
-```
-
 ##### Fork the project, and then go:
 ```
 git clone https://github.com/<yourgithubprofile>/container-ioc
@@ -15,11 +10,11 @@ cd container-ioc
 ```
 npm install
 ```
-##### Gulp tasks:
+##### Npm scripts:
 ```
-gulp compile // compiles src files
-gulp test // compiles src and runs unit tests
-gulp tslint // tslints :)
+npm start // lints, compiles and tests source code
+npm run dev // runs dev workflow, lints, compiles, tests source code and watches source files.
+npm run compile-dist // compiles src code and puts to dist folders
 ```
 
 ##### Set up your fork to point to original repository:

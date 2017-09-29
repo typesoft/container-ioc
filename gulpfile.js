@@ -6,20 +6,26 @@ const tslint = require('gulp-tslint');
 const tsProjectDevelopment = ts.createProject('tsconfig.json');
 const tsProjectDist = ts.createProject('tsconfig.json', { noImplicitAny: true });
 
-gulp.task('compile', function() {
+gulp.task('compile', ['tslint'], function() {
     return gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
         .pipe(tsProjectDevelopment())
         .pipe(gulp.dest('src/'));
 });
 
-gulp.task('test', ['compile-dev'], function() {
+gulp.task('dev', ['compile', 'test'], function() {
+    gulp.watch(['src/**/*.ts', '!src/**/*.d.ts'], function() {
+        gulp.run('compile', 'test');
+    });
+});
+
+gulp.task('test', ['compile'], function() {
     return gulp.src('src/tests/**/*.spec.js', {read: false})
         .pipe(mocha({
             reporter: 'dot'
         }))
 });
 
-gulp.task('compile-dist', function() {
+gulp.task('compile-dist', ['tslint'], function() {
     return gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
         .pipe(tsProjectDevelopment())
         .pipe(gulp.dest('dist/'));
@@ -41,3 +47,5 @@ gulp.task("tslint", () => {
         .pipe(tslint.report());
     }
 );
+
+gulp.task("default", ["tslint", "compile", "test"]);
