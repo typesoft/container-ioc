@@ -25,6 +25,7 @@
     "member-access": false,
     "arrow-parens": false,
     "object-literal-sort-keys": false,
-    "no-trailing-whitespace": false
+    "no-trailing-whitespace": false,
+    "no-angle-bracket-type-assertion": false
   }
 }
