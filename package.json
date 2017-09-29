@@ -21,8 +21,11 @@
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "build": "tsc -w",
-    "test": "mocha --reporter dot -w 'dist/**/*.spec.js'"
+    "start": "node ./node_modules/gulp/bin/gulp.js",
+    "dev": "node ./node_modules/gulp/bin/gulp.js dev",
+    "test": "node ./node_modules/gulp/bin/gulp.js test",
+    "compile": "node ./node_modules/gulp/bin/gulp.js compile",
+    "compile-dist": "node ./node_modules/gulp/bin/gulp.js compile-dist"
   },
   "bugs": {
     "url": "https://github.com/thohoh/container-ioc/issues"
