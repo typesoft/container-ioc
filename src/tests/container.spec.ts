@@ -74,6 +74,13 @@ describe('Container', () => {
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
+
+        it('should resolve value given to container at registration stage', () => {
+            const value = { name: 'Peter' };
+            container.register({ token: 'V', useValue: value });
+            const inst = container.resolve('V');
+            expect(inst).to.be.equal(value);
+        });
     });
 
     describe('createScope()', () => {

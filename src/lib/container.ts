@@ -27,6 +27,10 @@ export class Container implements IContainer {
             }
         }
 
+        if (registryData.value) {
+            return registryData.value;
+        }
+
         if (registryData.instance) {
             return registryData.instance;
         }
@@ -58,11 +62,18 @@ export class Container implements IContainer {
             token = provider;
             cls = provider;
         } else {
-            token = provider.token;
-            cls = provider.useClass;
+            token = (<IProvider> provider).token;
+            cls = (<IProvider> provider).useClass;
         }
 
-        const registryData: IRegistryData = new RegistryData(cls);
+        const registryData: IRegistryData = new RegistryData();
+
+        if ((<IProvider> provider).useValue) {
+            registryData.value = (<IProvider> provider).useValue;
+        } else {
+            registryData.cls = cls;
+        }
+
         this.registry.set(token, registryData);
     }
 
