@@ -8,10 +8,12 @@ export class Container implements IContainer {
 
     constructor(private parent?: IContainer) {}
 
-    public register(provider: IProvider|IProvider[]|IConstructor) {
+    public register(provider: IProvider|IProvider[]|IConstructor): void {
         if (provider instanceof Array) {
+            provider = provider.map(p => this.nornalizeProvider(p));
             provider.forEach(p => this.registerOne(p));
         } else {
+            provider = this.nornalizeProvider(provider);
             this.registerOne(provider);
         }
     }
@@ -35,6 +37,16 @@ export class Container implements IContainer {
             return registryData.instance;
         }
 
+        if (registryData.factory) {
+            let injections: ProviderToken[] = [];
+
+            if (registryData.injections) {
+                injections = registryData.injections.map(i => this.resolve(i));
+            }
+
+            return registryData.factory(...injections);
+        }
+
         const cls = registryData.cls;
         const injectionsMd: IInjectionMd[] = this.getInjections(cls);
         const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
@@ -54,27 +66,27 @@ export class Container implements IContainer {
         return new Container(this);
     }
 
-    private registerOne(provider: IProvider|IConstructor) {
-        let token: any;
-        let cls: any;
-
-        if (typeof provider === 'function') {
-            token = provider;
-            cls = provider;
-        } else {
-            token = (<IProvider> provider).token;
-            cls = (<IProvider> provider).useClass;
-        }
-
+    private registerOne(provider: IProvider) {
         const registryData: IRegistryData = new RegistryData();
 
-        if ((<IProvider> provider).useValue) {
-            registryData.value = (<IProvider> provider).useValue;
-        } else {
-            registryData.cls = cls;
+        if (provider.useValue) {
+            registryData.value = provider.useValue;
+        } else if (provider.useClass) {
+            registryData.cls = provider.useClass;
+        } else if (provider.useFactory) {
+            registryData.factory = provider.useFactory;
+            registryData.injections = <ProviderToken[]> provider.inject;
         }
 
-        this.registry.set(token, registryData);
+        this.registry.set(provider.token, registryData);
+    }
+
+    private nornalizeProvider(provider: IProvider|IConstructor): IProvider {
+        if (typeof provider === 'function') {
+            provider = { token: provider, useClass: provider };
+        }
+
+        return provider;
     }
 
     private getInjections(cls: any): IInjectionMd[] {

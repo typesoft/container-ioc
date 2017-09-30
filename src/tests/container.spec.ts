@@ -81,6 +81,36 @@ describe('Container', () => {
             const inst = container.resolve('V');
             expect(inst).to.be.equal(value);
         });
+
+        it('should resolve value with factory provided by user', () => {
+            container.register({
+                token: 'V',
+                useFactory: () => {
+                    return 'result';
+                }
+            });
+
+            const inst = container.resolve('V');
+            expect(inst).to.be.equal('result');
+        });
+
+        it('should resolve value with factory provided by user + injections', () => {
+            class Foo {
+                bar = 'works';
+            }
+            container.register({ token: 'IFoo', useClass: Foo} );
+
+            container.register({
+                token: 'V',
+                useFactory: (foo: any) => {
+                    return foo.bar;
+                },
+                inject: ['IFoo']
+            });
+
+            const inst = container.resolve('V');
+            expect(inst).to.be.equal('works');
+        });
     });
 
     describe('createScope()', () => {
