@@ -4,6 +4,7 @@ import { Container } from '../lib/index';
 import 'mocha';
 import { expect } from 'chai';
 import { IConstructor } from '../lib/interfaces';
+import { InjectionToken } from '../lib/index';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
@@ -110,6 +111,26 @@ describe('Container', () => {
 
             const inst = container.resolve('V');
             expect(inst).to.be.equal('works');
+        });
+
+        it('should resolve an instance with InjectionToken', () => {
+            interface IFactory {
+                create(): any;
+            }
+
+            class ConcreteFactory implements IFactory {
+                create(): any {
+                    return;
+                }
+            }
+
+            const TFactory = new InjectionToken<IFactory>('IFactory');
+
+            container.register({ token: TFactory, useClass: ConcreteFactory } );
+
+            const concreteFactory = container.resolve(TFactory);
+
+            expect(concreteFactory instanceof ConcreteFactory).to.be.true;
         });
     });
 

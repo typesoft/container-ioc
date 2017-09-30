@@ -60,6 +60,28 @@ let fromFactory: string = container.resolve('FromFactory');
 let fromFactoryWithInjections: string = container.resolve('FromFactoryWithInjections');
 ```
 
+### Injection Token
+> Using string literals for tokens can become a head ache, use Injection Token instread:
+```Typescript
+import { InjectionToken, Container } from 'container-ioc';
+
+let container = new Container();
+
+interface IFactory {
+    create(): any;
+}
+
+const TFactory = new InjectionToken<IFactory>('IFactory'); // T in TFactory stands for token
+
+class ConcreteFactory implements IFactory {}
+
+container.register({ token: TFactory, useClass: ConcreteFactory });
+
+let factory: IFactory = container.resolve(TFactory);
+
+```
+
+
 ### Scoped containers
 > if a provider wasn't found in a container it will look up in ascendant containers if there's any:
 ```Typescript
