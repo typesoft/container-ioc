@@ -2,8 +2,10 @@ export type ProviderToken = any;
 
 export interface IProvider {
     token: ProviderToken;
-    useClass?: any;
+    useClass?: IConstructor;
     useValue?: any;
+    useFactory?: any;
+    inject?: ProviderToken[];
 }
 
 export interface IInjectionMd {
