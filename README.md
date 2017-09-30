@@ -15,82 +15,49 @@ import { Container, Inject } from 'container-ioc';
 
 let container = new Container();
 
-
 // Register classes:
-class RandomClass1 {};
-class RandomClass3 {
-    doSomething(): void {
-        console.log('hello world');
-    }
-};
+class A {}
+class B {}
 
-
-// Use Injector decorater to inject dependencies:
-class RandomClass2 {
-    constructor(@Inject(RandomClass3) public instance3: any) {
+class C {
+    constructor(@Inject(B) public b: B) { // use @Inject() decorator to mark injections in a class
     }
-};
+}
 
 
 // Register classes in the container:
 // You can pass just a Class literal alone or a provider literal -> 
 // { token: 'string or class literal', useClass: 'class literal' }
 let providers = [
-    RandomClass1,
-    { token: 'anystring', useClass: RandomClass2 }, 
-    { token: RandomClass3, useClass: RandomClass3 }
+    A,
+    { token: 'IB', useClass: B }, 
+    { token: C, useClass: C },
+    { token: 'UseValue', useValue: 'any-primitive-or-object'},
+    {
+        token: 'FromFactory',
+        useFactory: () => {
+            return 'something';
+        }
+    },
+    {
+        token: 'FromFactoryWithInjections',
+        useFactory: (value, b, c) => {
+            return `${value + b.constructor.name + c.constructor.name}`;
+        },
+        inject: ['UseValue', 'IB', C]
+    }
 ];
 
 container.register(providers);
 
 
 // Resolve instances
-let instance1: RandomClass1 = container.resolve(RandomClass1);
-let instance2: RandomClass2 = container.resolve('anystring');
-instance2.instance3.doSomething(); // hello world
-```
-
-##### in a ES6 project:
-```Javascript
-let Container = require('container-ioc').Container;
-
-let container = new Container();
-
-
-// Register classes:
-class RandomClass1 {};
-class RandomClass3 {
-    doSomething() {
-        console.log('hello world');
-    }
-};
-
-
-// Use Injector decorater to inject dependencies:
-class RandomClass2 {
-    instance3;
-    constructor() {
-        this.instance3 = container.resolve(RandomClass3);
-    }
-};
-
-
-// Register classes in the container:
-// You can pass just a Class literal alone or a provider literal -> 
-// { token: 'string or class literal', useClass: 'class literal' }
-let providers = [
-    RandomClass1,
-    { token: 'anystring', useClass: RandomClass2 }, 
-    { token: RandomClass3, useClass: RandomClass3 }
-];
-
-container.register(providers);
-
-
-// Resolve instances
-let instance1 = container.resolve(RandomClass1);
-let instance2 = container.resolve('anystring');
-instance2.instance3.doSomething(); // hello world
+let a: A = container.resolve(A);
+let b: B = container.resolve('IB');
+let c: C = container.resolve(C);
+let value: string = container.resolve('UseValue');
+let fromFactory: string = container.resolve('FromFactory');
+let fromFactoryWithInjections: string = container.resolve('FromFactoryWithInjections');
 ```
 
 ### Scoped containers
@@ -98,19 +65,15 @@ instance2.instance3.doSomething(); // hello world
 ```Typescript
 import { Container } from 'container-ioc';
 
-class SomeClass {
-    doStuff(): void {
-        console.log('hello world');
-    }
-}
+class A {}
 
 let parentContainer = new Container();
 let childContainer = parentContainer.createScope();
 
-parentContainer.register({ token: 'ISome', useClass: SomeClass });
+parentContainer.register({ token: 'IA', useClass: A });
 
-let instance = childContainer.resolve('ISome');
-instance.doStuff(); // hello world
+let a = childContainer.resolve('IA');
+a.doStuff(); // hello world
 
 ```
 
