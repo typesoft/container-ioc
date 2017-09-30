@@ -1,5 +1,5 @@
 ## IoC Container written in Typescript
-<p> Annotation based Inversion of Controll container implementation.
+Annotation based Inversion of Controll container implementation with friendly API.
 
 #### Installation:
 ```
@@ -15,19 +15,13 @@ import { Container, Inject } from 'container-ioc';
 
 let container = new Container();
 
-// Register classes:
 class A {}
 class B {}
-
 class C {
-    constructor(@Inject(B) public b: B) { // use @Inject() decorator to mark injections in a class
+    constructor(@Inject(B) public b: B) { // use @Inject() decorator to mark dependencies
     }
 }
 
-
-// Register classes in the container:
-// You can pass just a Class literal alone or a provider literal -> 
-// { token: 'string or class literal', useClass: 'class literal' }
 let providers = [
     A,
     { token: 'IB', useClass: B }, 
@@ -99,13 +93,8 @@ a.doStuff(); // hello world
 
 ```
 
-### Future:
-
-It's just a very basic version. I'm going to add more functionality to meet common use cases, such as ability 
-to mark injections in constructor with types for typescript projects and more handy API.
-
 ### Contribution:
-If you want to help feel free to submit a bug or a feature request.
-Also leave a comment under the issue you'd like to work on.
+Feel free to submit a bug or a feature request.
+Or pick an issue from [here](https://github.com/thohoh/container-ioc/issues) and leave a comment with your proposal.
 
 see [CONTRIBUTION.md](CONTRIBUTION.md)
