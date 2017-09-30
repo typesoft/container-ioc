@@ -8,13 +8,14 @@ export class Container implements IContainer {
 
     constructor(private parent?: IContainer) {}
 
-    public register(provider: IProvider|IProvider[]|IConstructor): void {
-        if (provider instanceof Array) {
-            provider = provider.map(p => this.nornalizeProvider(p));
-            provider.forEach(p => this.registerOne(p));
+    public register(provider: IProvider|IProvider[]|IConstructor|IConstructor[]): void {
+        provider = this.nornalizeProvider(provider);
+
+        if (Array.isArray(provider)) {
+            this.registerAll(<IProvider[]> provider);
         } else {
             provider = this.nornalizeProvider(provider);
-            this.registerOne(provider);
+            this.registerOne(<IProvider> provider);
         }
     }
 
@@ -47,6 +48,23 @@ export class Container implements IContainer {
             return registryData.factory(...injections);
         }
 
+        const instance: IInjectionInstance = this.createInstance(registryData);
+
+        registryData.instance = instance;
+        this.registry.set(token, registryData);
+
+        return instance;
+    }
+
+    public createScope(): IContainer {
+        return new Container(this);
+    }
+
+    private registerAll(providers: IProvider[]): void {
+        providers.forEach((p: IProvider) => this.registerOne(p));
+    }
+
+    private createInstance(registryData: IRegistryData): IInjectionInstance {
         const cls = registryData.cls;
         const injectionsMd: IInjectionMd[] = this.getInjections(cls);
         const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
@@ -56,14 +74,7 @@ export class Container implements IContainer {
             args[injection.parameterIndex] = resolvedInjections[index];
         });
 
-        registryData.instance = new cls(...args);
-        this.registry.set(token, registryData);
-
-        return registryData.instance;
-    }
-
-    public createScope(): IContainer {
-        return new Container(this);
+        return new cls(...args);
     }
 
     private registerOne(provider: IProvider) {
@@ -81,12 +92,21 @@ export class Container implements IContainer {
         this.registry.set(provider.token, registryData);
     }
 
-    private nornalizeProvider(provider: IProvider|IConstructor): IProvider {
-        if (typeof provider === 'function') {
-            provider = { token: provider, useClass: provider };
-        }
+    private nornalizeProvider(provider: IProvider|IProvider[]|IConstructor|IConstructor[]): IProvider|IProvider[] {
+        let normalizedProvider: any;
 
-        return provider;
+        if (Array.isArray(provider)) {
+            normalizedProvider = provider.map<IProvider>((p: IProvider|IConstructor) => this.normalizeOneProvider(p));
+        } else {
+            normalizedProvider = this.normalizeOneProvider(provider);
+        }
+        return normalizedProvider;
+    }
+    private normalizeOneProvider(provider: IProvider|IConstructor): IProvider {
+        if (typeof provider === 'function') {
+            provider = { token: <IConstructor> provider, useClass: <IConstructor> provider };
+        }
+        return <IProvider> provider;
     }
 
     private getInjections(cls: any): IInjectionMd[] {
