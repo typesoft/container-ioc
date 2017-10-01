@@ -3,7 +3,7 @@ import { Container } from '../lib/index';
 
 import 'mocha';
 import { expect } from 'chai';
-import { IConstructor } from '../lib/interfaces';
+import { IConstructor, IProvider } from '../lib/interfaces';
 import { InjectionToken } from '../lib/index';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
@@ -14,13 +14,6 @@ describe('Container', () => {
 
     beforeEach(() => {
         container = new Container();
-    });
-
-    describe('register()', () => {
-        it('should throw an error if provided invalid provider', () => {
-            const throwableFunc = () => container.register(1);
-            expect(throwableFunc).to.throw();
-        });
     });
 
     describe('resolve()', () => {
