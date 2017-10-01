@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "IoC container",
   "author": "Alexander Kozlov",
   "repository": {
