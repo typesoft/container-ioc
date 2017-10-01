@@ -1,8 +1,9 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
-import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './decorators';
 import { IContainer } from './container.interface';
 import { ClassNotInjectableError, InvalidProviderProvidedError } from './exceptions';
+import { MetadataAnnotator } from './metadata/index';
+import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 
 export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();
@@ -119,10 +120,10 @@ export class Container implements IContainer {
     }
 
     private isInjectable(cls: IConstructor): boolean {
-        return !!(Reflect.getOwnMetadata(INJECTABLE_MD_KEY, cls));
+        return !!(MetadataAnnotator.getMetadata(INJECTABLE_MD_KEY, cls));
     }
 
     private getInjections(cls: any): IInjectionMd[] {
-        return Reflect.getOwnMetadata(INJECTIONS_MD_KEY, cls) || [];
+        return MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, cls) || [];
     }
 }
