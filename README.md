@@ -8,8 +8,8 @@ Inversion of Controll container with friendly API.
 * Lightweight.
 * No dependencies.
 * Hierarchical containers.
-* Plugable metadata annotator.
-* Persistance control: singleton or per request (handy for backend) **upcoming...**
+* Pluggable metadata annotator.
+* Persistence control: singleton or per request (handy for backend) **upcoming...**
 
 #### Installation:
 ```
