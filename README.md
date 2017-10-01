@@ -1,9 +1,8 @@
-[![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
-
 ![alt text](http://abcselfstorageperth.com.au/wp-content/uploads/2014/08/icon-container-storage1.png)
 
 ## IoC Container written in Typescript
-Inversion of Controll container with friendly API.
+
+[![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 
 ### Features:
 * Angular-like API.
