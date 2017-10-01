@@ -31,7 +31,7 @@ class B {}
 
 @Injectable()
 class C {
-    constructor(@Inject(B) public b: B) { // use @Inject() decorator to mark dependencies
+    constructor(@Inject('IB') public b: B) {
     }
 }
 
@@ -66,7 +66,7 @@ let fromFactoryWithInjections: string = container.resolve('FromFactoryWithInject
 ```
 
 ### Injection Token
-> Using string literals for tokens can become a head ache, use Injection Token instread:
+> Using string literals for tokens can become a head ache, use Injection Token instread. **T** in front of **TFactory** stands for token, but you can stick to your own name convention:
 ```Typescript
 import { InjectionToken, Container } from 'container-ioc';
 
