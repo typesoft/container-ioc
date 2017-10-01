@@ -16,8 +16,15 @@ describe('Container', () => {
         container = new Container();
     });
 
+    describe('register()', () => {
+        it('should throw an error if provided invalid provider', () => {
+            const throwableFunc = () => container.register(1);
+            expect(throwableFunc).to.throw();
+        });
+    });
+
     describe('resolve()', () => {
-        it('should resolve an instance of a given provider when registered with a single class literal', () => {
+        it('should resolve an instance when registered with a class Literal', () => {
             const testClass: IConstructor = class TestClass {};
             container.register(testClass);
             const instance = container.resolve(testClass);
@@ -25,7 +32,7 @@ describe('Container', () => {
             expect(instance instanceof testClass).to.be.true;
         });
 
-        it('should resolve an instance of a given class when registered with a provider literal', () => {
+        it('should resolve an instance when registered "useClass" attribute', () => {
             const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
@@ -35,7 +42,15 @@ describe('Container', () => {
             expect(instance instanceof testClass).to.be.true;
         });
 
-        it('should resolve an instance of a given when registered with array of providers/tokens', () => {
+        it('should resolve an instance when registered with "useValue" attribute', () => {
+            const value = {};
+            container.register({ token: 'Token', useValue: value });
+            const instance = container.resolve('Token');
+            expect(instance).to.be.ok;
+            expect(instance === value).to.be.true;
+        });
+
+        it('should resolve an instance if registered with array of providers', () => {
             const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
@@ -45,27 +60,33 @@ describe('Container', () => {
             expect(instance instanceof testClass).to.be.true;
         });
 
-        it('should resolve with a string literal', () => {
+        it('should resolve a value if registered and resolved with a token which is a string literal', () => {
             const testClass = class TestClass {};
             const testToken = 'ITestClass';
 
             container.register({ token: testToken, useClass: testClass });
             const instance = container.resolve(testToken);
+            expect(instance).to.be.ok;
+            expect(instance instanceof testClass).to.be.true;
+        });
+
+        it('should resolve a value when registered with a token which is an Object literal', () => {
+            const testClass = class TestClass {};
+            container.register({ token: testClass, useClass: testClass });
+            const instance = container.resolve(testClass);
             expect(instance).to.be.ok;
             expect(instance instanceof testClass).to.be.true;
         });
 
         it('should throw an error if provided token is not registered', () => {
             const testClass = class TestClass {};
-            const testToken = 'ITestClass';
+            container.register([{ token: 'Token', useClass: testClass }]);
 
-            container.register([{ token: testToken, useClass: testClass }]);
-
-            const throwableFunc = () => container.resolve('RandomToken');
+            const throwableFunc = () => container.resolve('NotRegisteredToken');
             expect(throwableFunc).to.throw();
         });
 
-        it('should look for instance in ascendant containers if it wasnt found in the current container', () => {
+        it(`should resolve an instance found in ascendant containers if wasn't found in current container`, () => {
             const testClass: IConstructor = class TestClass {};
             container.register(testClass);
             const childContainer = container.createScope();
@@ -76,14 +97,7 @@ describe('Container', () => {
             expect(instance instanceof testClass).to.be.true;
         });
 
-        it('should resolve value given to container at registration stage', () => {
-            const value = { name: 'Peter' };
-            container.register({ token: 'V', useValue: value });
-            const inst = container.resolve('V');
-            expect(inst).to.be.equal(value);
-        });
-
-        it('should resolve value with factory provided by user', () => {
+        it('should resolve ф value when registered with "useFactory"', () => {
             container.register({
                 token: 'V',
                 useFactory: () => {
@@ -95,7 +109,7 @@ describe('Container', () => {
             expect(inst).to.be.equal('result');
         });
 
-        it('should resolve value with factory provided by user + injections', () => {
+        it('should resolve a value if registered with "useFactory" + "inject" attributes', () => {
             class Foo {
                 bar = 'works';
             }
@@ -113,7 +127,7 @@ describe('Container', () => {
             expect(inst).to.be.equal('works');
         });
 
-        it('should resolve an instance with InjectionToken', () => {
+        it('should resolve value if registered with InjectionToken', () => {
             interface IFactory {
                 create(): any;
             }
