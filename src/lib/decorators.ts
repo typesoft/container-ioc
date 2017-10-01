@@ -1,6 +1,9 @@
 import { IInjectionMd } from './interfaces';
-import { MetadataAnnotator } from './metadata/index';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
+import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
+import { AnnotatorProvider } from './metadata/index';
+
+const MetadataAnnotator: IMetadataAnnotator = AnnotatorProvider.get();
 
 export function Injectable() {
     return (target: object) => {

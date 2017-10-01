@@ -2,8 +2,11 @@ import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToke
 import { IRegistryData, RegistryData } from './registry-data';
 import { IContainer } from './container.interface';
 import { ClassNotInjectableError, InvalidProviderProvidedError } from './exceptions';
-import { MetadataAnnotator } from './metadata/index';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
+import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
+import { AnnotatorProvider } from './metadata/index';
+
+const MetadataAnnotator: IMetadataAnnotator = AnnotatorProvider.get();
 
 export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();

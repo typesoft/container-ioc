@@ -1,13 +1,19 @@
 ## IoC Container written in Typescript
-Annotation based Inversion of Controll container with friendly API.
+Inversion of Controll container with friendly API.
+
+### Features:
+* Angular-like API.
+* Hierarchical containers.
+* No reflect-metadata dependency out of the box.
+* Plugable metadata annotator.
+* Persistance control: singleton or per request (handy for backend) **upcoming...**
 
 #### Installation:
 ```
 npm install --save container-ioc
 ```
 
-### API usage:
-> Container's API and behaviour is very similar to the one used in **Angular4**.
+### API basic usage:
 
 ##### in your Typescript project:
 ```Typescript
@@ -95,6 +101,23 @@ parentContainer.register({ token: 'IA', useClass: A });
 
 childContainer.resolve('IA');
 
+```
+
+### Metadata Annotator
+> By default metadata is assigned to static properties.
+> If you want to use Reflect API for annotation, you can implement **IMetadataAnnotator** interface with your implementation using Reflect API. Then plug it into **AnnotatorProvider**
+```Typescript
+import { AnnotatorProvider, IMetadataAnnotator, Container } from 'container-ioc';
+
+class ReflectMetadataAnnotator implements IMetadataAnnotator {
+    // your implementation
+}
+
+AnnotatorProvider.set(new ReflectMetadataAnnotator());
+
+let container = new Container();
+
+...
 ```
 
 ### Contribution:
