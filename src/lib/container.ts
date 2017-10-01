@@ -1,4 +1,4 @@
-import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
+import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken, RegistrationProvider } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { IContainer } from './container.interface';
 import { ClassNotInjectableError, InvalidProviderProvidedError } from './exceptions';
@@ -13,11 +13,11 @@ export class Container implements IContainer {
 
     constructor(private parent?: IContainer) {}
 
-    public register(provider: IProvider|IProvider[]|IConstructor|IConstructor[]): void {
+    public register(provider: RegistrationProvider|RegistrationProvider[]): void {
         provider = this.nornalizeProvider(provider);
 
         if (Array.isArray(provider)) {
-            this.registerAll(<IProvider[]> provider);
+            this.registerAll(<RegistrationProvider[]> provider);
         } else {
             provider = this.nornalizeProvider(provider);
             this.registerOne(<IProvider> provider);
@@ -72,7 +72,7 @@ export class Container implements IContainer {
         return new Container(this);
     }
 
-    private registerAll(providers: IProvider[]): void {
+    private registerAll(providers: RegistrationProvider[]): void {
         providers.forEach((p: IProvider) => this.registerOne(p));
     }
 
@@ -103,7 +103,7 @@ export class Container implements IContainer {
         this.registry.set(provider.token, registryData);
     }
 
-    private nornalizeProvider(provider: IProvider|IProvider[]|IConstructor|IConstructor[]): IProvider|IProvider[] {
+    private nornalizeProvider(provider: RegistrationProvider|RegistrationProvider[]): IProvider {
         let normalizedProvider: any;
 
         if (Array.isArray(provider)) {
@@ -113,7 +113,7 @@ export class Container implements IContainer {
         }
         return normalizedProvider;
     }
-    private normalizeOneProvider(provider: IProvider|IConstructor): IProvider {
+    private normalizeOneProvider(provider: RegistrationProvider): IProvider {
         if (typeof provider === 'function') {
             provider = { token: <IConstructor> provider, useClass: <IConstructor> provider };
         } else if (!(provider instanceof Object)) {
