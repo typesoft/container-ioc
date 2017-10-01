@@ -2,6 +2,7 @@ import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToke
 import { IRegistryData, RegistryData } from './registry-data';
 import { INJECTIONS_MD_KEY } from './decorators';
 import { IContainer } from './container.interface';
+import { InvalidProviderProvidedError } from './exceptions';
 
 export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();
@@ -105,6 +106,8 @@ export class Container implements IContainer {
     private normalizeOneProvider(provider: IProvider|IConstructor): IProvider {
         if (typeof provider === 'function') {
             provider = { token: <IConstructor> provider, useClass: <IConstructor> provider };
+        } else if (!(provider instanceof Object)) {
+            throw new InvalidProviderProvidedError();
         }
         return <IProvider> provider;
     }

@@ -16,6 +16,13 @@ describe('Container', () => {
         container = new Container();
     });
 
+    describe('register()', () => {
+        it('should throw an error if provided invalid provider', () => {
+            const throwableFunc = () => container.register(1);
+            expect(throwableFunc).to.throw();
+        });
+    });
+
     describe('resolve()', () => {
         it('should resolve an instance when registered with a class Literal', () => {
             const testClass: IConstructor = class TestClass {};
