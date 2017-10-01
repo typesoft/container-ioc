@@ -1,5 +1,5 @@
 ## IoC Container written in Typescript
-Annotation based Inversion of Controll container implementation with friendly API.
+Annotation based Inversion of Controll container with friendly API.
 
 #### Installation:
 ```
@@ -9,14 +9,19 @@ npm install --save container-ioc
 ### API usage:
 > Container's API and behaviour is very similar to the one used in **Angular4**.
 
-##### in a Typescript project:
+##### in your Typescript project:
 ```Typescript
 import { Container, Inject } from 'container-ioc';
 
 let container = new Container();
 
+@Injectable()
 class A {}
+
+@Injectable()
 class B {}
+
+@Injectable()
 class C {
     constructor(@Inject(B) public b: B) { // use @Inject() decorator to mark dependencies
     }
@@ -44,8 +49,6 @@ let providers = [
 
 container.register(providers);
 
-
-// Resolve instances
 let a: A = container.resolve(A);
 let b: B = container.resolve('IB');
 let c: C = container.resolve(C);
@@ -67,6 +70,7 @@ interface IFactory {
 
 const TFactory = new InjectionToken<IFactory>('IFactory'); // T in TFactory stands for token
 
+@Injectable()
 class ConcreteFactory implements IFactory {}
 
 container.register({ token: TFactory, useClass: ConcreteFactory });
@@ -81,6 +85,7 @@ let factory: IFactory = container.resolve(TFactory);
 ```Typescript
 import { Container } from 'container-ioc';
 
+@Injectable()
 class A {}
 
 let parentContainer = new Container();
@@ -88,8 +93,7 @@ let childContainer = parentContainer.createScope();
 
 parentContainer.register({ token: 'IA', useClass: A });
 
-let a = childContainer.resolve('IA');
-a.doStuff(); // hello world
+childContainer.resolve('IA');
 
 ```
 
