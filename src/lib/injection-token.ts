@@ -1,9 +1,7 @@
 export class InjectionToken<T> {
-    constructor(private desc: string) {
+    constructor(private description: string) {}
 
-    }
-
-    toString(): string {
-        return this.desc;
+    public toString(): string {
+        return this.description;
     }
 }

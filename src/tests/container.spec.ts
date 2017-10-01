@@ -3,8 +3,8 @@ import { Container } from '../lib/index';
 
 import 'mocha';
 import { expect } from 'chai';
-import { IConstructor, IProvider } from '../lib/interfaces';
 import { InjectionToken } from '../lib/index';
+import { Injectable } from '../lib/decorators';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
@@ -18,21 +18,24 @@ describe('Container', () => {
 
     describe('resolve()', () => {
         it('should resolve an instance when registered with a class Literal', () => {
-            const testClass: IConstructor = class TestClass {};
-            container.register(testClass);
-            const instance = container.resolve(testClass);
+            @Injectable()
+            class TestClass {}
+            container.register(TestClass);
+
+            const instance = container.resolve(TestClass);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should resolve an instance when registered "useClass" attribute', () => {
-            const testClass = class TestClass {};
+            @Injectable()
+            class TestClass {}
             const testToken = 'ITestClass';
 
-            container.register({ token: testToken, useClass: testClass });
+            container.register({ token: testToken, useClass: TestClass });
             const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should resolve an instance when registered with "useValue" attribute', () => {
@@ -44,50 +47,56 @@ describe('Container', () => {
         });
 
         it('should resolve an instance if registered with array of providers', () => {
-            const testClass = class TestClass {};
+            @Injectable()
+            class TestClass {}
             const testToken = 'ITestClass';
 
-            container.register([{ token: testToken, useClass: testClass }]);
+            container.register([{ token: testToken, useClass: TestClass }]);
             const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should resolve a value if registered and resolved with a token which is a string literal', () => {
-            const testClass = class TestClass {};
+            @Injectable()
+            class TestClass {}
             const testToken = 'ITestClass';
 
-            container.register({ token: testToken, useClass: testClass });
+            container.register({ token: testToken, useClass: TestClass });
             const instance = container.resolve(testToken);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should resolve a value when registered with a token which is an Object literal', () => {
-            const testClass = class TestClass {};
-            container.register({ token: testClass, useClass: testClass });
-            const instance = container.resolve(testClass);
+            @Injectable()
+            class TestClass {}
+            container.register({ token: TestClass, useClass: TestClass });
+            const instance = container.resolve(TestClass);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should throw an error if provided token is not registered', () => {
-            const testClass = class TestClass {};
-            container.register([{ token: 'Token', useClass: testClass }]);
+            @Injectable()
+            class TestClass {}
+            container.register([{ token: 'Token', useClass: TestClass }]);
 
             const throwableFunc = () => container.resolve('NotRegisteredToken');
             expect(throwableFunc).to.throw();
         });
 
         it(`should resolve an instance found in ascendant containers if wasn't found in current container`, () => {
-            const testClass: IConstructor = class TestClass {};
-            container.register(testClass);
+            @Injectable()
+            class TestClass {}
+
+            container.register(TestClass);
             const childContainer = container.createScope();
             const grandChildContainer = childContainer.createScope();
 
-            const instance = grandChildContainer.resolve(testClass);
+            const instance = grandChildContainer.resolve(TestClass);
             expect(instance).to.be.ok;
-            expect(instance instanceof testClass).to.be.true;
+            expect(instance instanceof TestClass).to.be.true;
         });
 
         it('should resolve ф value when registered with "useFactory"', () => {
@@ -103,6 +112,7 @@ describe('Container', () => {
         });
 
         it('should resolve a value if registered with "useFactory" + "inject" attributes', () => {
+            @Injectable()
             class Foo {
                 bar = 'works';
             }
@@ -125,6 +135,7 @@ describe('Container', () => {
                 create(): any;
             }
 
+            @Injectable()
             class ConcreteFactory implements IFactory {
                 create(): any {
                     return;

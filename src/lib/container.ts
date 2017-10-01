@@ -1,8 +1,8 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
-import { INJECTIONS_MD_KEY } from './decorators';
+import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './decorators';
 import { IContainer } from './container.interface';
-import { InvalidProviderProvidedError } from './exceptions';
+import { ClassNotInjectableError, InvalidProviderProvidedError } from './exceptions';
 
 export class Container implements IContainer {
     private registry: Map<ProviderToken, IRegistryData> = new Map();
@@ -49,7 +49,14 @@ export class Container implements IContainer {
             return registryData.factory(...injections);
         }
 
-        const instance: IInjectionInstance = this.createInstance(registryData);
+        const constructor: IConstructor = registryData.cls;
+
+        const isInjectable: boolean = this.isInjectable(constructor);
+        if (!isInjectable) {
+            throw new ClassNotInjectableError(constructor.name);
+        }
+
+        const instance: IInjectionInstance = this.createInstance(constructor);
 
         registryData.instance = instance;
         this.registry.set(token, registryData);
@@ -65,8 +72,7 @@ export class Container implements IContainer {
         providers.forEach((p: IProvider) => this.registerOne(p));
     }
 
-    private createInstance(registryData: IRegistryData): IInjectionInstance {
-        const cls = registryData.cls;
+    private createInstance(cls: IConstructor): IInjectionInstance {
         const injectionsMd: IInjectionMd[] = this.getInjections(cls);
         const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
 
@@ -110,6 +116,10 @@ export class Container implements IContainer {
             throw new InvalidProviderProvidedError();
         }
         return <IProvider> provider;
+    }
+
+    private isInjectable(cls: IConstructor): boolean {
+        return !!(Reflect.getOwnMetadata(INJECTABLE_MD_KEY, cls));
     }
 
     private getInjections(cls: any): IInjectionMd[] {
