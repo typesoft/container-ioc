@@ -18,6 +18,7 @@
     container.register({ token: 'IA', useClass: A });
     ```
 
+
 <a name="1.3.1"></a>
 # [1.3.1]() (2017-09-30)
 
