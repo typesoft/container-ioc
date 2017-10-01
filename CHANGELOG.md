@@ -1,3 +1,13 @@
+<a name="1.5.0"></a>
+# [1.5.0]() (2017-10-02)
+
+### Features
+
+* **Plugable MetadataAnnotator via AnnotatorProvider** examples on [README.md](README.md) [551cbc9c](https://github.com/thohoh/container-ioc/commit/551cbc9cfc9316ce72ad9572ac500089b011ca12)
+
+### Removed
+* **reflect-metadata as a dependency**
+
 <a name="1.4.0"></a>
 # [1.4.0]() (2017-10-01)
 
