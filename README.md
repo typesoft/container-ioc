@@ -5,8 +5,9 @@ Inversion of Controll container with friendly API.
 
 ### Features:
 * Angular-like API.
+* Lightweight.
+* No dependencies.
 * Hierarchical containers.
-* No reflect-metadata dependency out of the box.
 * Plugable metadata annotator.
 * Persistance control: singleton or per request (handy for backend) **upcoming...**
 
