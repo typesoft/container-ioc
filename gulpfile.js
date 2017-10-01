@@ -39,7 +39,7 @@ gulp.task('test-dist', ['compile-dist'], function () {
 });
 
 gulp.task("tslint", () => {
-    return gulp.src("src/**/*.ts")
+    return gulp.src(["src/**/*.ts", '!src/**/*.d.ts'])
         .pipe(tslint({
             configuration: "./tslint.json"
 
