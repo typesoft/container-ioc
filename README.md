@@ -1,6 +1,8 @@
 ![alt text](http://abcselfstorageperth.com.au/wp-content/uploads/2014/08/icon-container-storage1.png)
 
-## IoC Container written in Typescript
+
+## **container-ioc** 
+is an [IoC container](http://martinfowler.com/articles/injection.html) for Typescript projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as the grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
