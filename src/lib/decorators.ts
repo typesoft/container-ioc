@@ -5,6 +5,7 @@ import { AnnotatorProvider } from './metadata/index';
 
 const MetadataAnnotator: IMetadataAnnotator = AnnotatorProvider.get();
 
+
 export function Injectable() {
     return (target: object) => {
         MetadataAnnotator.defineMetadata(INJECTABLE_MD_KEY, true, target);
