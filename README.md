@@ -4,7 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![npm](https://img.shields.io/npm/dt/container-ioc.svg)](https://www.npmjs.com/package/container-ioc)
-[![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)]()
+[![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)](https://github.com/thohoh/container-ioc/blob/master/LICENSE)
 
 ### Features:
 * Angular-like API.
