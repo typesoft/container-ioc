@@ -11,3 +11,4 @@ gulpfile.js
 src
 dist/tests
 usage.js
+.travis.yml
