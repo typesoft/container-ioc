@@ -81,7 +81,7 @@ interface IFactory {
     create(): any;
 }
 
-const TFactory = new InjectionToken<IFactory>('IFactory'); // T in TFactory stands for token
+const TFactory = new InjectionToken<IFactory>('IFactory');
 
 @Injectable()
 class ConcreteFactory implements IFactory {}
