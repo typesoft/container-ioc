@@ -3,6 +3,7 @@
 ## IoC Container written in Typescript
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
+[![npm](https://img.shields.io/npm/dt/express.svg)](https://www.npmjs.com/package/container-ioc)
 
 ### Features:
 * Angular-like API.
