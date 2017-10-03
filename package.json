@@ -23,10 +23,9 @@
   "scripts": {
     "start": "node ./node_modules/gulp/bin/gulp.js",
     "dev": "node ./node_modules/gulp/bin/gulp.js dev",
-    "test": "node ./node_modules/gulp/bin/gulp.js test",
     "compile": "node ./node_modules/gulp/bin/gulp.js compile",
-    "compile-dist": "node ./node_modules/gulp/bin/gulp.js compile-dist",
-    "test-dist": "node ./node_modules/gulp/bin/gulp.js test-dist"
+    "test": "node ./node_modules/gulp/bin/gulp.js test",
+    "dist": "node ./node_modules/gulp/bin/gulp.js dist"
   },
   "bugs": {
     "url": "https://github.com/thohoh/container-ioc/issues"
