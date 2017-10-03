@@ -47,6 +47,13 @@ container.register(providers);
 let app = container.resolve(App);
 ```
 
+### Examples:
+* [using factory](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory.ts)
+* [using factory with injections](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory-with-injections.ts)
+* [using value](https://github.com/thohoh/container-ioc/blob/master/examples/use-value.ts)
+* [persistence control](https://github.com/thohoh/container-ioc/blob/master/examples/persistence-control.ts)
+* [more examples](https://github.com/thohoh/container-ioc/blob/master/examples/)
+
 ### Persistence control.
 > By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
 ```typescript
