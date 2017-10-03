@@ -5,6 +5,7 @@ import 'mocha';
 import { expect } from 'chai';
 import { InjectionToken } from '../lib/index';
 import { Inject, Injectable } from '../lib/decorators';
+import { LifeTime } from '../lib/interfaces';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
@@ -140,6 +141,53 @@ describe('Container', () => {
             const concreteFactory = container.resolve(TFactory);
 
             expect(concreteFactory instanceof ConcreteFactory).to.be.true;
+        });
+
+        describe('LifeTime', () => {
+            it('should resolve a singleton instance if LifeTime was not specified', () => {
+                @Injectable()
+                class A {}
+
+                container.register({ token: A, useClass: A });
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).to.be.equal(instance2);
+            });
+
+            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest', () => {
+                @Injectable()
+                class A {}
+
+                container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).not.to.be.equal(instance2);
+            });
+
+            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest in case of nested dependencies', () => {
+                @Injectable()
+                class A {
+                    constructor(@Inject('IB') private b: any) {}
+                }
+
+                @Injectable()
+                class B {
+
+                }
+
+                container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
+                container.register({ token: 'IB', useClass: B});
+
+                const instance1: any = container.resolve(A);
+                const instance2: any = container.resolve(A);
+
+                expect(instance1).not.to.be.equal(instance2);
+                expect(instance1.b).to.be.equal(instance2.b);
+            });
         });
 
         describe('Errors', () => {

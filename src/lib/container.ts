@@ -1,4 +1,4 @@
-import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken, RegistrationProvider } from './interfaces';
+import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, LifeTime, ProviderToken, RegistrationProvider } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { IContainer } from './container.interface';
 import { ClassNotInjectableError, InvalidProviderProvidedError, NoProviderError } from './exceptions';
@@ -44,10 +44,6 @@ export class Container implements IContainer {
             return this.parent.resolve(token);
         }
 
-        if (registryData.value) {
-            return registryData.value;
-        }
-
         if (registryData.instance) {
             return registryData.instance;
         }
@@ -71,8 +67,10 @@ export class Container implements IContainer {
 
         const instance: IInjectionInstance = this.createInstance(constructor, traceMessage);
 
-        registryData.instance = instance;
-        this.registry.set(token, registryData);
+        if (registryData.lifeTime === LifeTime.Persistent) {
+            registryData.instance = instance;
+            this.registry.set(token, registryData);
+        }
 
         return instance;
     }
@@ -85,13 +83,15 @@ export class Container implements IContainer {
         const registryData: IRegistryData = new RegistryData();
 
         if (provider.useValue) {
-            registryData.value = provider.useValue;
+            registryData.instance = provider.useValue;
         } else if (provider.useClass) {
             registryData.cls = provider.useClass;
         } else if (provider.useFactory) {
             registryData.factory = provider.useFactory;
             registryData.injections = <ProviderToken[]> provider.inject;
         }
+
+        registryData.lifeTime = provider.lifeTime || LifeTime.Persistent;
 
         this.registry.set(provider.token, registryData);
     }
