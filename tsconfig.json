@@ -11,9 +11,13 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2016", "DOM"]
+    "lib": ["es2016", "DOM"],
+    "paths": {
+      "container-ioc": ["src/lib/index.d.ts"]
+    }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "examples"
   ]
 }
