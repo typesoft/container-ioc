@@ -4,7 +4,7 @@ import { Container } from '../lib/index';
 import 'mocha';
 import { expect } from 'chai';
 import { InjectionToken } from '../lib/index';
-import { Injectable } from '../lib/decorators';
+import { Inject, Injectable } from '../lib/decorators';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
@@ -77,15 +77,6 @@ describe('Container', () => {
             expect(instance instanceof TestClass).to.be.true;
         });
 
-        it('should throw an error if provided token is not registered', () => {
-            @Injectable()
-            class TestClass {}
-            container.register([{ token: 'Token', useClass: TestClass }]);
-
-            const throwableFunc = () => container.resolve('NotRegisteredToken');
-            expect(throwableFunc).to.throw();
-        });
-
         it(`should resolve an instance found in ascendant containers if wasn't found in current container`, () => {
             @Injectable()
             class TestClass {}
@@ -150,6 +141,107 @@ describe('Container', () => {
 
             expect(concreteFactory instanceof ConcreteFactory).to.be.true;
         });
+
+        describe('Errors', () => {
+            it('should throw an error if provided token is not registered', () => {
+                @Injectable()
+                class TestClass {}
+                container.register([{ token: 'Token', useClass: TestClass }]);
+
+                const throwableFunc = () => container.resolve('NotRegisteredToken');
+                expect(throwableFunc).to.throw();
+            });
+
+            it('should correctly print token in error messages: Token is a class literal', () => {
+                @Injectable()
+                class B {}
+
+                @Injectable()
+                class A {
+                    constructor(@Inject(B) private b: any) {}
+                }
+
+                container.register({ token: 'IA', useClass: A });
+
+                const throwableFunc = () => container.resolve('IA');
+                expect(throwableFunc).to.throw('No provider for B. Trace: IA --> B');
+            });
+
+            it('should correctly print token in error messages: Token is an InjectionToken', () => {
+                @Injectable()
+                class A {}
+
+                container.register({ token: 'IA', useClass: A });
+
+                interface IB {
+                    [key: string]: any;
+                }
+
+                const TB = new InjectionToken<IB>('IB');
+
+                const throwableFunc = () => container.resolve(TB);
+                expect(throwableFunc).to.throw('No provider for IB. Trace: IB');
+            });
+
+            it('should correctly print token in error messages: Token is a string', () => {
+                @Injectable()
+                class A {}
+
+                container.register({ token: 'IA', useClass: A });
+
+                const throwableFunc = () => container.resolve('str');
+                expect(throwableFunc).to.throw('No provider for str. Trace: str');
+            });
+
+            it('should throw an error with a specific message if the 1st token in the line is not registered', () => {
+                @Injectable()
+                class A {
+                    constructor(@Inject('d') private a: any) {}
+                }
+                container.register([{ token: 'IA', useClass: A }]);
+
+                const throwableFunc = () => container.resolve('Fish');
+                expect(throwableFunc).to.throw('No provider for Fish. Trace: Fish');
+            });
+
+            it('should throw an error with a specific message if the 2nd token in the line is not registered', () => {
+                @Injectable()
+                class A {
+                    constructor(@Inject('IB') private b: any) {}
+                }
+                container.register([{ token: 'IA', useClass: A }]);
+
+                const throwableFunc = () => container.resolve('IA');
+                expect(throwableFunc).to.throw('No provider for IB. Trace: IA --> IB');
+            });
+
+            it('should throw an error with a specific message if the 3nd token in the line is not registered', () => {
+                @Injectable()
+                class A {
+                    constructor(@Inject('IB') private b: any) {}
+                }
+
+                @Injectable()
+                class B {
+                    constructor(@Inject('IC') private c: any) {}
+                }
+                container.register({ token: 'IA', useClass: A });
+                container.register({ token: 'IB', useClass: B });
+
+                const throwableFunc = () => container.resolve('IA');
+                expect(throwableFunc).to.throw('No provider for IC. Trace: IA --> IB --> IC');
+            });
+
+            it('should throw an error if registered class isnt marked with Injectable() decorator', () => {
+                class A {
+                }
+                container.register({ token: 'IA', useClass: A });
+
+                const throwableFunc = () => container.resolve('IA');
+                expect(throwableFunc).to.throw();
+            });
+        });
+
     });
 
     describe('createScope()', () => {
