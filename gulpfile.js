@@ -6,16 +6,16 @@ const tslint = require('gulp-tslint');
 const tsProjectDevelopment = ts.createProject('tsconfig.json');
 const tsProjectDist = ts.createProject('tsconfig.json', { noImplicitAny: true });
 
-gulp.task('compile', ['tslint'], function() {
-    return gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
-        .pipe(tsProjectDevelopment())
-        .pipe(gulp.dest('src/'));
-});
-
 gulp.task('dev', ['compile', 'test'], function() {
     gulp.watch(['src/**/*.ts', '!src/**/*.d.ts'], function() {
         gulp.run('compile', 'test');
     });
+});
+
+gulp.task('compile', ['tslint'], function() {
+    return gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
+        .pipe(tsProjectDevelopment())
+        .pipe(gulp.dest('src/'));
 });
 
 gulp.task('test', ['compile'], function() {
@@ -47,5 +47,7 @@ gulp.task("tslint", () => {
         .pipe(tslint.report());
     }
 );
+
+gulp.task('dist', ['tslint', 'compile-dist', 'test-dist']);
 
 gulp.task("default", ["tslint", "compile", "test"]);

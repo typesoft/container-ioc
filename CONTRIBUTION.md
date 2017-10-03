@@ -14,7 +14,7 @@ npm install
 ```
 npm start // lints, compiles and tests source code
 npm run dev // runs dev workflow, lints, compiles, tests source code and watches source files.
-npm run compile-dist // compiles src code and puts everything into dist folder
+npm run dist // compiles src code and puts everything into dist folder
 ```
 
 ##### Set up your fork to point to original repository:
