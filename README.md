@@ -50,7 +50,7 @@ let app = container.resolve(App);
 ### Persistence control.
 > By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
 ```typescript
-import { Container, Inject, Injectable } from 'container-ioc';
+import { Container, Injectable, LifeTime } from 'container-ioc';
 
 const container = new Container();
 
@@ -59,8 +59,8 @@ class A {}
 
 container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
 
-let instance1 = container.resolve(A);
-let instance2 = container.resolve(A);
+const instance1 = container.resolve(A);
+const instance2 = container.resolve(A);
 
 // instance1 !== instance2
 
