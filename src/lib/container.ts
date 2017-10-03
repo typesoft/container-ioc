@@ -1,7 +1,7 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, ProviderToken, RegistrationProvider } from './interfaces';
 import { IRegistryData, RegistryData } from './registry-data';
 import { IContainer } from './container.interface';
-import { ClassNotInjectableError, InvalidProviderProvidedError } from './exceptions';
+import { ClassNotInjectableError, InvalidProviderProvidedError, NoProviderError } from './exceptions';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
 import { AnnotatorProvider } from './metadata/index';
@@ -25,14 +25,23 @@ export class Container implements IContainer {
     }
 
     public resolve(token: ProviderToken): IInjectionInstance {
+        return this.resolveInternal(token);
+    }
+
+    public createScope(): IContainer {
+        return new Container(this);
+    }
+
+    private resolveInternal(token: ProviderToken, traceMessage?: string): IInjectionInstance {
+        traceMessage = this.buildTraceMessage(token, traceMessage);
+
         const registryData = <IRegistryData> this.registry.get(token);
 
         if (!registryData) {
-            if (this.parent) {
-                return this.parent.resolve(token);
-            } else {
-                throw new Error(`No provider for ${token}`);
+            if (!this.parent) {
+                throw new NoProviderError(this.getTokenString(token), traceMessage );
             }
+            return this.parent.resolve(token);
         }
 
         if (registryData.value) {
@@ -47,7 +56,7 @@ export class Container implements IContainer {
             let injections: ProviderToken[] = [];
 
             if (registryData.injections) {
-                injections = registryData.injections.map(i => this.resolve(i));
+                injections = registryData.injections.map(i => this.resolveInternal(i, traceMessage));
             }
 
             return registryData.factory(...injections);
@@ -60,7 +69,7 @@ export class Container implements IContainer {
             throw new ClassNotInjectableError(constructor.name);
         }
 
-        const instance: IInjectionInstance = this.createInstance(constructor);
+        const instance: IInjectionInstance = this.createInstance(constructor, traceMessage);
 
         registryData.instance = instance;
         this.registry.set(token, registryData);
@@ -68,24 +77,8 @@ export class Container implements IContainer {
         return instance;
     }
 
-    public createScope(): IContainer {
-        return new Container(this);
-    }
-
     private registerAll(providers: RegistrationProvider[]): void {
         providers.forEach((p: IProvider) => this.registerOne(p));
-    }
-
-    private createInstance(cls: IConstructor): IInjectionInstance {
-        const injectionsMd: IInjectionMd[] = this.getInjections(cls);
-        const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolve(injectionMd.token));
-
-        const args: any[] = [];
-        injectionsMd.forEach((injection: IInjectionMd, index) => {
-            args[injection.parameterIndex] = resolvedInjections[index];
-        });
-
-        return new cls(...args);
     }
 
     private registerOne(provider: IProvider) {
@@ -103,23 +96,50 @@ export class Container implements IContainer {
         this.registry.set(provider.token, registryData);
     }
 
+    private createInstance(cls: IConstructor, message: string): IInjectionInstance {
+        const injectionsMd: IInjectionMd[] = this.getInjections(cls);
+        const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolveInternal(injectionMd.token, message));
+
+        const args: any[] = [];
+        injectionsMd.forEach((injection: IInjectionMd, index) => {
+            args[injection.parameterIndex] = resolvedInjections[index];
+        });
+
+        return new cls(...args);
+    }
+
     private nornalizeProvider(provider: RegistrationProvider|RegistrationProvider[]): IProvider {
         let normalizedProvider: any;
 
         if (Array.isArray(provider)) {
-            normalizedProvider = provider.map<IProvider>((p: IProvider|IConstructor) => this.normalizeOneProvider(p));
+            normalizedProvider = provider.map<IProvider>((p: IProvider|IConstructor) => this.normalizeSingleProvider(p));
         } else {
-            normalizedProvider = this.normalizeOneProvider(provider);
+            normalizedProvider = this.normalizeSingleProvider(provider);
         }
         return normalizedProvider;
     }
-    private normalizeOneProvider(provider: RegistrationProvider): IProvider {
+
+    // TODO move into a helper service
+    private normalizeSingleProvider(provider: RegistrationProvider): IProvider {
         if (typeof provider === 'function') {
             provider = { token: <IConstructor> provider, useClass: <IConstructor> provider };
         } else if (!(provider instanceof Object)) {
             throw new InvalidProviderProvidedError();
         }
         return <IProvider> provider;
+    }
+
+    private buildTraceMessage(token: ProviderToken, message: string|undefined): string {
+        const tokenStr: string = this.getTokenString(token);
+        return message ? `${message} --> ${tokenStr}` : `Trace: ${tokenStr}`;
+    }
+
+    private getTokenString(token: ProviderToken): string {
+        if (typeof token === 'function') {
+            return (<IConstructor> token).name;
+        } else {
+            return `${token}`;
+        }
     }
 
     private isInjectable(cls: IConstructor): boolean {
