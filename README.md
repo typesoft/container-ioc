@@ -11,92 +11,92 @@ is an [IoC container](http://martinfowler.com/articles/injection.html) for Types
 
 ### Features:
 * Angular-like API.
-* Lightweight.
 * No dependencies.
+* Persistence control.
 * Hierarchical containers.
 * Pluggable metadata annotator.
-* Persistence control: singleton or per request (handy for backend) **upcoming...**
 
 #### Installation:
 ```
 npm install --save container-ioc
 ```
 
-### API basic usage:
+### Quick start
 
-##### in your Typescript project:
 ```Typescript
-import { Container, Inject } from 'container-ioc';
+import { Container, Inject, Injectable } from 'container-ioc';
 
 let container = new Container();
+
+@Injectable()
+class App {}
+
+interface IService {}
+
+@Injectable()
+class Service implements IService {
+    constructor(@Inject('ISerivce') public service: IService) {}
+}
+
+let providers = [
+    { token: App, useClass: App }, 
+    { token: 'IService', useClass: Service }
+];
+
+container.register(providers);
+let app = container.resolve(App);
+```
+
+### Persistence control.
+> By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
+```typescript
+import { Container, Inject, Injectable } from 'container-ioc';
+
+const container = new Container();
 
 @Injectable()
 class A {}
 
-@Injectable()
-class B {}
+container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
 
-@Injectable()
-class C {
-    constructor(@Inject('IB') public b: B) {
-    }
-}
+let instance1 = container.resolve(A);
+let instance2 = container.resolve(A);
 
-let providers = [
-    A,
-    { token: 'IB', useClass: B }, 
-    { token: C, useClass: C },
-    { token: 'UseValue', useValue: 'any-primitive-or-object'},
-    {
-        token: 'FromFactory',
-        useFactory: () => {
-            return 'something';
-        }
-    },
-    {
-        token: 'FromFactoryWithInjections',
-        useFactory: (value, b, c) => {
-            return `${value + b.constructor.name + c.constructor.name}`;
-        },
-        inject: ['UseValue', 'IB', C]
-    }
-];
+// instance1 !== instance2
 
-container.register(providers);
-
-let a: A = container.resolve(A);
-let b: B = container.resolve('IB');
-let c: C = container.resolve(C);
-let value: string = container.resolve('UseValue');
-let fromFactory: string = container.resolve('FromFactory');
-let fromFactoryWithInjections: string = container.resolve('FromFactoryWithInjections');
 ```
 
 ### Injection Token
-> Using string literals for tokens can become a head ache, use Injection Token instread. **T** in front of **TFactory** stands for token, but you can stick to your own name convention:
-```Typescript
-import { InjectionToken, Container } from 'container-ioc';
+> InjectionToken helps to avoid hardcoded strings in your code.
 
-let container = new Container();
-
-interface IFactory {
-    create(): any;
-}
-
-const TFactory = new InjectionToken<IFactory>('IFactory');
+##### Without InjectionToken:
+```typescript
+interface IService {}
 
 @Injectable()
-class ConcreteFactory implements IFactory {}
+class ConcreteService {}
 
-container.register({ token: TFactory, useClass: ConcreteFactory });
+container.register({ token: 'IService', useClass: ConcreteService });
+container.resolve('IService');
 
-let factory: IFactory = container.resolve(TFactory);
+```
+##### With InjectionToken
+```Typescript
+interface IService {}
+
+const TService = new InjectionToken<IService>('IService'); // T stands for Token, you can pick another prefix
+
+@Injectable()
+class ConcreteService {}
+
+container.register({ token: TService, useClass: ConcreteService });
+container.resolve(TService);
 
 ```
 
 
-### Scoped containers
-> if a provider wasn't found in a container it will look up in ascendant containers if there's any:
+### Hierarchical containers.
+> if a provider wasn't found in a container it will look up in ascendant containers if there are any:
 ```Typescript
 import { Container } from 'container-ioc';
 
@@ -112,7 +112,7 @@ childContainer.resolve('IA');
 
 ```
 
-### Metadata Annotator
+### Pluggable metadata annotator.
 > By default metadata is assigned to static properties.
 > If you want to use Reflect API for annotation, you can implement **IMetadataAnnotator** interface with your implementation using Reflect API. Then plug it into **AnnotatorProvider**
 ```Typescript
