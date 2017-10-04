@@ -25,7 +25,7 @@ npm install --save container-ioc
 
 ### Quick start
 
-```Typescript
+```typescript
 import { Container, Inject, Injectable } from 'container-ioc';
 
 let container = new Container();
@@ -102,7 +102,7 @@ const instance2 = container.resolve(A);
 
 ### Hierarchical containers.
 > if a provider wasn't found in a container it will look up in ascendant containers if there are any:
-```Typescript
+```typescript
 import { Container } from 'container-ioc';
 
 @Injectable()
@@ -120,7 +120,7 @@ childContainer.resolve('IA');
 ### Pluggable metadata annotator.
 > By default metadata is assigned to static properties.
 > If you want to use Reflect API for annotation, you can implement **IMetadataAnnotator** interface with your implementation using Reflect API. Then plug it into **AnnotatorProvider**
-```Typescript
+```typescript
 import { AnnotatorProvider, IMetadataAnnotator, Container } from 'container-ioc';
 
 class ReflectMetadataAnnotator implements IMetadataAnnotator {
