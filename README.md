@@ -62,7 +62,7 @@ container.resolve('IService');
 
 ```
 ##### With InjectionToken
-```Typescript
+```typescript
 interface IService {}
 
 const TService = new InjectionToken<IService>('IService'); // T stands for Token, you can pick another prefix
@@ -72,7 +72,6 @@ class ConcreteService {}
 
 container.register({ token: TService, useClass: ConcreteService });
 container.resolve(TService);
-
 ```
 
 ### Examples:
