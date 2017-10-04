@@ -1,7 +1,7 @@
 {
   "name": "container-ioc",
-  "version": "1.6.2",
-  "description": "IoC container",
+  "version": "1.6.3",
+  "description": "Dependency Injection and IoC container",
   "author": "Alexander Kozlov",
   "repository": {
     "type": "git",
@@ -12,10 +12,15 @@
     "container",
     "dependency",
     "di",
+    "dependency injection",
+    "service locator",
     "inject",
     "injection",
     "inverstion of control",
-    "injector"
+    "injector",
+    "injectable",
+    "interface",
+    "abstraction"
   ],
   "license": "ISC",
   "main": "dist/lib/index.js",
