@@ -2,7 +2,7 @@
 
 
 ## **container-ioc** 
-is an [IoC container](http://martinfowler.com/articles/injection.html) for Typescript projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
+is [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) and [IoC container](http://martinfowler.com/articles/injection.html) for Typescript projects (ES6+ API is coming). It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
@@ -10,11 +10,13 @@ is an [IoC container](http://martinfowler.com/articles/injection.html) for Types
 [![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)](https://github.com/thohoh/container-ioc/blob/master/LICENSE)
 
 ### Features:
-* Angular-like API.
-* No dependencies.
-* Persistence control.
+* Well-known Angular4+ DI API.
+* No external dependencies.
+* Singleton and Non-Singleton configuration.
 * Hierarchical containers.
 * Pluggable metadata annotator.
+* Can be used both on front-end and back-end.
+* 100% test coverage.
 
 #### Installation:
 ```
