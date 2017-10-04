@@ -37,7 +37,7 @@ interface IService {}
 
 @Injectable()
 class Service implements IService {
-    constructor(@Inject('ISerivce') public service: IService) {}
+    constructor(@Inject('IService') public service: IService) {}
 }
 
 let providers = [
