@@ -1,4 +1,4 @@
-import { Container, Injectable, Inject, InjectionToken } from 'container-ioc';
+import { Container, Injectable, InjectionToken } from 'container-ioc';
 
 interface IService {
     [key: string]: any;
