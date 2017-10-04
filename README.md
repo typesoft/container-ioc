@@ -48,35 +48,7 @@ let providers = [
 container.register(providers);
 let app = container.resolve(App);
 ```
-
-### Examples:
-* [using factory](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory.ts)
-* [using factory with injections](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory-with-injections.ts)
-* [using value](https://github.com/thohoh/container-ioc/blob/master/examples/use-value.ts)
-* [persistence control](https://github.com/thohoh/container-ioc/blob/master/examples/persistence-control.ts)
-* [more examples](https://github.com/thohoh/container-ioc/blob/master/examples/)
-
-### Persistence control.
-> By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
-```typescript
-import { Container, Injectable, LifeTime } from 'container-ioc';
-
-const container = new Container();
-
-@Injectable()
-class A {}
-
-container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
-
-const instance1 = container.resolve(A);
-const instance2 = container.resolve(A);
-
-// instance1 !== instance2
-
-```
-
-### Injection Token
-> InjectionToken helps to avoid hardcoded strings in your code.
+### Best Practise: use InjectionToken instances for tokens instead of string/class literals:
 
 ##### Without InjectionToken:
 ```typescript
@@ -103,6 +75,31 @@ container.resolve(TService);
 
 ```
 
+### Examples:
+* [using factory](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory.ts)
+* [using factory with injections](https://github.com/thohoh/container-ioc/blob/master/examples/use-factory-with-injections.ts)
+* [using value](https://github.com/thohoh/container-ioc/blob/master/examples/use-value.ts)
+* [persistence control](https://github.com/thohoh/container-ioc/blob/master/examples/persistence-control.ts)
+* [more examples](https://github.com/thohoh/container-ioc/blob/master/examples/)
+
+### Persistence control.
+> By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
+```typescript
+import { Container, Injectable, LifeTime } from 'container-ioc';
+
+const container = new Container();
+
+@Injectable()
+class A {}
+
+container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
+
+const instance1 = container.resolve(A);
+const instance2 = container.resolve(A);
+
+// instance1 !== instance2
+
+```
 
 ### Hierarchical containers.
 > if a provider wasn't found in a container it will look up in ascendant containers if there are any:
