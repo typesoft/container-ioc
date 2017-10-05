@@ -68,7 +68,7 @@ class Service {
 * [examples/javascript](examples/javascript)
 * [examples/typescript](examples/typescript)
 
-##> Code examples below are written in Typescript.
+## Code examples below are written in Typescript.
 
 ### Life Time control.
 > By default, containers resolve singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
