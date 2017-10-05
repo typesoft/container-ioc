@@ -2,7 +2,7 @@
 
 
 ## **container-ioc** 
-is [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) and [IoC container](http://martinfowler.com/articles/injection.html) for both **Typescript** and **ES6+** projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
+is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)/[IoC container](http://martinfowler.com/articles/injection.html) package for  **Typescript**/**ES6+** projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
@@ -62,7 +62,7 @@ class Service implements IService {
 }
 ```
 
-### NOTE: All the examples below are written in Typescript. Check out [examples/javascript](examples/javascript) and [examples/typescript](examples/typescript) for reference.
+### NOTE: All the examples below are written in Typescript. Check out [examples/javascript](examples/javascript) and [examples/typescript](examples/typescript) for examples.
 
 ### Best Practise: use InjectionToken instances for tokens instead of string/class literals:
 
