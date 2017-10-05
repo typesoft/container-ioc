@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.6.10",
+  "version": "1.6.11",
   "description": "Dependency Injection and IoC container",
   "author": "Alexander Kozlov",
   "repository": {
