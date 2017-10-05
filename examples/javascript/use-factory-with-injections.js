@@ -1,14 +1,12 @@
-import { Container, Injectable, Inject } from 'container-ioc';
+import { Container, Injectable } from 'container-ioc';
 
 const container = new Container();
 
-interface IService {
-    [key: string]: any;
-}
-
-@Injectable()
+@Injectable(['IUserFactory'])
 class App {
-    constructor(@Inject('IUseFactory') private service: IService) {}
+    constructor(service) {
+        this.service = service;
+    }
 }
 
 @Injectable()
@@ -19,7 +17,7 @@ container.register([
     { token: 'IService', useClass: Service },
     {
         token: 'IUseFactory',
-        useFactory: (service: IService) => {
+        useFactory: (service) => {
             return service;
         },
         inject: ['IService']

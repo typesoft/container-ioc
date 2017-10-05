@@ -1,14 +1,12 @@
-import { Container, Injectable, Inject } from 'container-ioc';
+import { Container, Injectable } from 'container-ioc';
 
 const container = new Container();
 
-interface IService {
-    [key: string]: any;
-}
-
-@Injectable()
+@Injectable(['IUseFactory'])
 class App {
-    constructor(@Inject('IUseFactory') private service: IService) {}
+    constructor(service) {
+        this.service = service;
+    }
 }
 
 @Injectable()
