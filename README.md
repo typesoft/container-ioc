@@ -55,7 +55,7 @@ let app = container.resolve(App);
 ```javascript
 
 @Injectable(['IService'])
-class Service implements IService {
+class Service {
     constructor(service) {
         this.service = service;
     }
