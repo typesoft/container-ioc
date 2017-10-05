@@ -2,7 +2,7 @@
 
 
 ## **container-ioc** 
-is [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) and [IoC container](http://martinfowler.com/articles/injection.html) for Typescript projects (ES6+ API is coming). It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
+is [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) and [IoC container](http://martinfowler.com/articles/injection.html) for both **Typescript** and **ES6+** projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
@@ -11,12 +11,12 @@ is [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) an
 
 ### Features:
 * Well-known Angular4+ DI API.
+* Can be used in ES6+/Typescript projects.
 * No external dependencies.
 * Singleton and Non-Singleton configuration.
 * Hierarchical containers.
 * Pluggable metadata annotator.
-* Can be used both on front-end and back-end.
-* 100% test coverage.
+* 97% test coverage.
 
 #### Installation:
 ```
@@ -25,6 +25,7 @@ npm install --save container-ioc
 
 ### Quick start
 
+##### Typescript:
 ```typescript
 import { Container, Inject, Injectable } from 'container-ioc';
 
@@ -48,6 +49,21 @@ let providers = [
 container.register(providers);
 let app = container.resolve(App);
 ```
+
+### Javascript ES6+:
+##### use alternative syntax for declaring injections shown below and don't use interfaces.
+```javascript
+
+@Injectable(['IService'])
+class Service implements IService {
+    constructor(service) {
+        this.service = service;
+    }
+}
+```
+
+### NOTE: All the examples below are written in Typescript. Check out [examples/javascript](examples/javascript) and [examples/typescript](examples/typescript) for reference.
+
 ### Best Practise: use InjectionToken instances for tokens instead of string/class literals:
 
 ##### Without InjectionToken:
