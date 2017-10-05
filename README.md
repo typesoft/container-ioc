@@ -151,7 +151,7 @@ container.register([
 ]);
 ```
 
-#### Best Practise
+### Best Practise, use InjectionToken
 > Use **InjectionToken** instances for tokens instead of string/class literals, 
 it saves from using hardcoded string and **helps in keeping abstractions intact**.
 
