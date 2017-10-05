@@ -67,6 +67,28 @@ describe('Decorators', () => {
             const throwableFunc = () => container.resolve(1);
             expect(throwableFunc).to.throw();
         });
+
+        it('should resolve an instance with all the dependencies specified in Injectable decorator', () => {
+            @Injectable()
+            class A {}
+
+            @Injectable(['IA'])
+            class B {
+                a: A;
+                constructor(a: A) {
+                    this.a = a;
+                }
+            }
+
+            container.register([
+                { token: 'IA', useClass: A },
+                { token: 'IB', useClass: B }
+            ]);
+
+            const instance = container.resolve('IB');
+
+            expect(instance.a).to.be.instanceOf(A);
+        });
     });
 
     describe('@Injectable()', () => {
