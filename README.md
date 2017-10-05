@@ -16,6 +16,7 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 * Life Time control.
 * Hierarchical containers.
 * Resolves values using Classes, Factories and Values.
+* Descriptive error messages.
 * 97% test coverage.
 
 ### Quick start
@@ -102,6 +103,52 @@ parentContainer.register({ token: 'IA', useClass: A });
 
 childContainer.resolve('IA');
 
+```
+
+### Using Factories
+```typescript
+/* Without injections */
+container.register([
+    {
+        token: 'TokenForFactory',
+        useFactory: () => {
+            return 'any-value';
+        }
+    }
+]);
+
+/* With injections */
+container.register([
+    { token: 'EnvProvider', useClass: EnvProvider },
+    {
+        token: 'TokenForFactory',
+        useFactory: (envProvider) => {
+            // do something
+            return 'something';
+        },
+        inject: ['EnvProvider']
+    }
+]);
+```
+
+### Using Values 
+```typescript
+container.register([
+    { token: 'IConfig', useValue: {}}
+]);
+```
+
+### Shortcut for Classes
+```typescript
+container.register([
+    App
+]);
+```
+Is the same as:
+```typescript
+container.register([
+    { token: App, useClass: App }
+]);
 ```
 
 #### Best Practise
