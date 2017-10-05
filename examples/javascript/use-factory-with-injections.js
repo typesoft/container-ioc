@@ -13,7 +13,7 @@ class App {
 class Service {}
 
 container.register([
-    App,
+    { token: App, useClass: App },
     { token: 'IService', useClass: Service },
     {
         token: 'IUseFactory',

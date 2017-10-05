@@ -12,7 +12,7 @@ class App {
 }
 
 container.register([
-    App,
+    { token: App, useClass: App },
     { token: 'IService', useValue: {}}
 ]);
 
