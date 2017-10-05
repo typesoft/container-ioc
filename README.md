@@ -11,12 +11,11 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 
 ### Features:
 * Well-known Angular4+ DI API.
-* Can be used in ES6+/Typescript projects.
+* ES6+/Typescript.
 * No external dependencies.
-* Life Time control,
-* Resolves values using Classes, Factories and Values.
+* Life Time control.
 * Hierarchical containers.
-* Pluggable metadata annotator.
+* Resolves values using Classes, Factories and Values.
 * 97% test coverage.
 
 ### Quick start
@@ -133,22 +132,6 @@ container.register({ token: TService, useClass: ConcreteService });
 container.resolve(TService);
 ```
 
-### Pluggable metadata annotator.
-> By default metadata is assigned to static properties.
-> If you want to use Reflect API for annotation, you can implement **IMetadataAnnotator** interface with your implementation using Reflect API. Then plug it into **AnnotatorProvider**
-```typescript
-import { AnnotatorProvider, IMetadataAnnotator, Container } from 'container-ioc';
-
-class ReflectMetadataAnnotator implements IMetadataAnnotator {
-    // your implementation
-}
-
-AnnotatorProvider.set(new ReflectMetadataAnnotator());
-
-let container = new Container();
-
-...
-```
 
 ### Contribution:
 Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
