@@ -1,9 +1,16 @@
+<a name="1.6.8"></a>
+# [1.6.8]() (2017-10-05)
+
+### Features
+
+* **Added support for ES6+**  Added new syntax for declaring injectioins of a class, now it's possible via Injectable decorator. see [examples/javascript](examples/javascript).
+
 <a name="1.6.0"></a>
 # [1.6.0]() (2017-10-04)
 
 ### Features
 
-* **Persistence control** added LifeTime managment configuration, see [example](examples/persistence-control.ts) [5ba097a9cb](https://github.com/thohoh/container-ioc/commit/5ba097a9cb41277e0e9013d4ef5e694f3595de36)
+* **Persistence control** added LifeTime managment configuration, see [example](examples/typescript/persistence-control.ts) [5ba097a9cb](https://github.com/thohoh/container-ioc/commit/5ba097a9cb41277e0e9013d4ef5e694f3595de36)
 
 <a name="1.5.0"></a>
 # [1.5.0]() (2017-10-02)
