@@ -13,19 +13,20 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 * Well-known Angular4+ DI API.
 * Can be used in ES6+/Typescript projects.
 * No external dependencies.
-* Singleton and Non-Singleton configuration.
+* Life Time control,
+* Resolves values using Classes, Factories and Values.
 * Hierarchical containers.
 * Pluggable metadata annotator.
 * 97% test coverage.
+
+### Quick start
 
 #### Installation:
 ```
 npm install --save container-ioc
 ```
 
-### Quick start
-
-##### Typescript:
+#### Typescript:
 ```typescript
 import { Container, Inject, Injectable } from 'container-ioc';
 
@@ -47,11 +48,12 @@ let providers = [
 ];
 
 container.register(providers);
+
 let app = container.resolve(App);
 ```
 
-### Javascript ES6+:
-##### use alternative syntax for declaring injections shown below and don't use interfaces.
+#### Javascript ES6+:
+> Use alternative syntax for declaring injections shown below and don't use interfaces. See [examples/javascript](examples/javascript) for more.
 ```javascript
 
 @Injectable(['IService'])
@@ -62,36 +64,14 @@ class Service {
 }
 ```
 
-### NOTE: All the examples below are written in Typescript. Check out [examples/javascript](examples/javascript) and [examples/typescript](examples/typescript) for examples.
+### Examples:  
+* [examples/javascript](examples/javascript)
+* [examples/typescript](examples/typescript)
 
-### Best Practise: use InjectionToken instances for tokens instead of string/class literals:
+##> Code examples below are written in Typescript.
 
-##### Without InjectionToken:
-```typescript
-interface IService {}
-
-@Injectable()
-class ConcreteService {}
-
-container.register({ token: 'IService', useClass: ConcreteService });
-container.resolve('IService');
-
-```
-##### With InjectionToken
-```typescript
-interface IService {}
-
-const TService = new InjectionToken<IService>('IService'); // T stands for Token, you can pick another prefix
-
-@Injectable()
-class ConcreteService {}
-
-container.register({ token: TService, useClass: ConcreteService });
-container.resolve(TService);
-```
-
-### Persistence control.
-> By default, resolved instances are singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
+### Life Time control.
+> By default, containers resolve singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
 ```typescript
 import { Container, Injectable, LifeTime } from 'container-ioc';
 
@@ -100,17 +80,16 @@ const container = new Container();
 @Injectable()
 class A {}
 
-container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
+container.register([
+    { token: A, useClass: A, lifeTime: LifeTime.PerRequest }
+]);
 
 const instance1 = container.resolve(A);
 const instance2 = container.resolve(A);
-
-// instance1 !== instance2
-
 ```
 
 ### Hierarchical containers.
-> if a provider wasn't found in a container it will look up in ascendant containers if there are any:
+> If a provider wasn't found in a container it will look up in ascendant containers if there are any:
 ```typescript
 import { Container } from 'container-ioc';
 
@@ -124,6 +103,34 @@ parentContainer.register({ token: 'IA', useClass: A });
 
 childContainer.resolve('IA');
 
+```
+
+#### Best Practise
+> Use **InjectionToken** instances for tokens instead of string/class literals, 
+it saves from using hardcoded string and **helps in keeping abstractions intact**.
+
+Before:
+```typescript
+interface IService {}
+
+@Injectable()
+class ConcreteService {}
+
+container.register({ token: 'IService', useClass: ConcreteService });
+container.resolve('IService');
+```
+After:
+
+```typescript
+interface IService {}
+
+const TService = new InjectionToken<IService>('IService'); // T stands for Token, you can pick another prefix
+
+@Injectable()
+class ConcreteService {}
+
+container.register({ token: TService, useClass: ConcreteService });
+container.resolve(TService);
 ```
 
 ### Pluggable metadata annotator.
@@ -144,7 +151,6 @@ let container = new Container();
 ```
 
 ### Contribution:
-Feel free to submit a bug or a feature request.
-Or pick an issue from [here](https://github.com/thohoh/container-ioc/issues) and leave a comment with your proposal.
+Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
 
-see [CONTRIBUTION.md](CONTRIBUTION.md)
+see [CONTRIBUTION.md](CONTRIBUTION.md) for more information.
