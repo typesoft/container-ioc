@@ -180,7 +180,7 @@ container.resolve(TService);
 ```
 
 
-### Contribution:
+## Contribution:
 Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
 
 see [CONTRIBUTION.md](CONTRIBUTION.md) for more information.
