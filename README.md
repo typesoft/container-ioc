@@ -2,7 +2,7 @@
 
 
 ## **container-ioc** 
-is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [IoC container](http://martinfowler.com/articles/injection.html) package for  **Typescript**/**ES6+** projects. It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
+is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [IoC container](http://martinfowler.com/articles/injection.html) package for Javascript and Node.js applicatioins powered by Typescript . It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
@@ -11,8 +11,7 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 [![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)](https://github.com/thohoh/container-ioc/blob/master/LICENSE)
 
 ### Features:
-* Well-known Angular4+ DI API.
-* ES6+/Typescript.
+* Well-known Angular DI API.
 * No external dependencies.
 * Life Time control.
 * Hierarchical containers.
@@ -53,7 +52,7 @@ container.register(providers);
 let app = container.resolve(App);
 ```
 
-#### Javascript ES6+:
+#### Javascript:
 > Use alternative syntax for declaring injections shown below and don't use interfaces. See [examples/javascript](examples/javascript) for more.
 ```javascript
 
