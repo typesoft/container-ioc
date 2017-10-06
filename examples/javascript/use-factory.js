@@ -9,12 +9,10 @@ class App {
     }
 }
 
-@Injectable()
 class Service {}
 
 container.register([
     { token: App, useClass: App },
-    { token: 'IService', useClass: Service },
     {
         token: 'IUseFactory',
         useFactory: () => {
