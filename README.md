@@ -7,7 +7,7 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
 [![npm](https://img.shields.io/npm/dt/container-ioc.svg)](https://www.npmjs.com/package/container-ioc)
-[![Gitter chat](https://badges.gitter.im/thohoh/container-ioc.png)]
+[![Gitter chat](https://badges.gitter.im/container-ioc/Lobby.png)](https://gitter.im/container-ioc/Lobby)
 [![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)](https://github.com/thohoh/container-ioc/blob/master/LICENSE)
 
 ### Features:
