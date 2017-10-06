@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.6.12",
+  "version": "1.6.14",
   "description": "Dependency Injection and IoC container",
   "author": "Alexander Kozlov",
   "repository": {
@@ -20,7 +20,19 @@
     "injector",
     "injectable",
     "interface",
-    "abstraction"
+    "abstraction",
+    "javascript",
+    "js",
+    "es6",
+    "es7",
+    "es8",
+    "node",
+    "nodejs",
+    "node.js",
+    "decorator",
+    "metadata",
+    "reflection",
+    "browser"
   ],
   "license": "ISC",
   "main": "dist/lib/index.js",
