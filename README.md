@@ -2,7 +2,7 @@
 
 
 ## **container-ioc** 
-is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [IoC container](http://martinfowler.com/articles/injection.html) package for Javascript and Node.js application powered by Typescript . It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
+is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [IoC container](http://martinfowler.com/articles/injection.html) package for Javascript and Node.js applications powered by Typescript . It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
 [![Build Status](https://travis-ci.org/thohoh/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
