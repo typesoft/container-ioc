@@ -1,19 +1,9 @@
-import { Container, Injectable, Inject } from 'container-ioc';
+import { Container } from 'container-ioc';
 
 const container = new Container();
 
-interface IService {
-    [key: string]: any;
-}
-
-@Injectable()
-class App {
-    constructor(@Inject('IService') private service: IService) {}
-}
-
 container.register([
-    { token: App, useClass: App },
-    { token: 'IService', useValue: {}}
+    { token: 'IConfig', useValue: {}}
 ]);
 
-const app = container.resolve(App);
+const app = container.resolve('IConfig');
