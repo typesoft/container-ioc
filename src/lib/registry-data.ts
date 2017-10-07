@@ -1,17 +1,21 @@
-import { IConstructor, IInjectionInstance, LifeTime, ProviderToken } from './interfaces';
+import { IConstructor, IInjectionInstance, IInjectionMd, LifeTime } from './interfaces';
+
+export type FactoryFunction = (...args: any[]) => any;
+
+export interface IFactory {
+    value: IConstructor | FactoryFunction;
+    isClass: boolean;
+    inject?: IInjectionMd[];
+}
 
 export interface IRegistryData {
     instance: IInjectionInstance;
-    cls: IConstructor;
-    factory: (...args: any[]) => any;
-    injections: ProviderToken[];
+    factory: IFactory;
     lifeTime: LifeTime;
 }
 
 export class RegistryData {
     public instance: IInjectionInstance;
-    public cls: IConstructor;
-    public factory: (...args: any[]) => any;
-    public injections: ProviderToken[];
+    public factory: IFactory;
     public lifeTime: LifeTime;
 }

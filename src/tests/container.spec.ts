@@ -91,7 +91,7 @@ describe('Container', () => {
             expect(instance instanceof TestClass).to.be.true;
         });
 
-        it('should resolve ф value when registered with "useFactory"', () => {
+        it('should resolve value when registered with "useFactory"', () => {
             container.register({
                 token: 'V',
                 useFactory: () => {
@@ -144,7 +144,7 @@ describe('Container', () => {
         });
 
         describe('LifeTime', () => {
-            it('should resolve a singleton instance if LifeTime was not specified', () => {
+            it('should resolve a singleton by default if LifeTime was not specified with useClass', () => {
                 @Injectable()
                 class A {}
 
@@ -156,7 +156,40 @@ describe('Container', () => {
                 expect(instance1).to.be.equal(instance2);
             });
 
-            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest', () => {
+            it('should resolve a singleton by default if LifeTime was not specified with useFactory', () => {
+                class A {}
+
+                container.register([
+                    {
+                        token: A,
+                        useFactory: () => new A()
+                    }
+                ]);
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).to.be.equal(instance2);
+            });
+
+            it('should resolve an instance with useFactory if LifeTime was set to LifeTime.PerRequest', () => {
+                class A {}
+
+                container.register([
+                    {
+                        token: A,
+                        useFactory: () => new A(),
+                        lifeTime: LifeTime.PerRequest
+                    }
+                ]);
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).not.to.be.equal(instance2);
+            });
+
+            it('should resolve an instances if LifeTime was set to LifeTime.PerRequest', () => {
                 @Injectable()
                 class A {}
 
@@ -168,7 +201,7 @@ describe('Container', () => {
                 expect(instance1).not.to.be.equal(instance2);
             });
 
-            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest in case of nested dependencies', () => {
+            it('should resolve different instances if LifeTime was set to LifeTime.PerRequest in case of nested dependencies', () => {
                 @Injectable()
                 class A {
                     constructor(@Inject('IB') private b: any) {}
@@ -187,6 +220,27 @@ describe('Container', () => {
 
                 expect(instance1).not.to.be.equal(instance2);
                 expect(instance1.b).to.be.equal(instance2.b);
+            });
+
+            it('should set default lifeTime via options', () => {
+                const cont = new Container({
+                    defaultLifeTime: LifeTime.PerRequest
+                });
+
+                @Injectable()
+                class A {}
+
+                cont.register({ token: A, useClass: A });
+                let instance1 = cont.resolve(A);
+                let instance2 = cont.resolve(A);
+
+                expect(instance1).not.to.be.equal(instance2);
+
+                cont.register({ token: 'IB', useFactory: () => ({}) });
+                instance1 = cont.resolve('IB');
+                instance2 = cont.resolve('IB');
+
+                expect(instance1).not.to.be.equal(instance2);
             });
         });
 
@@ -306,11 +360,38 @@ describe('Container', () => {
 
     });
 
-    describe('createScope()', () => {
-        it('should create child scope', () => {
-            const childContainer: any = container.createScope();
+    describe('Constructor', () => {
+        it('should set defaultLife through option object', () => {
+            const cont = new Container({ defaultLifeTime: LifeTime.PerRequest });
+
+            cont.register({ token: 'A', useFactory: () => ({})});
+
+            const instance1 = cont.resolve('A');
+            const instance2 = cont.resolve('A');
+
+            expect(instance1).not.to.be.equal(instance2);
+        });
+    });
+
+    describe('createChild()', () => {
+        it('should create child container', () => {
+            const childContainer: any = container.createChild();
             expect(childContainer).to.be.ok;
             expect(childContainer.parent).to.equal(container);
+        });
+    });
+
+    describe('setParent()', () => {
+        it('should set parent for a container', () => {
+            const parentContainer = new Container();
+            const childContainer = new Container();
+            childContainer.setParent(parentContainer);
+
+            parentContainer.register({ token: 'A', useValue: 'string' });
+
+            const value = childContainer.resolve('A');
+
+            expect(value).to.be.equal('string');
         });
     });
 });

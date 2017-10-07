@@ -104,33 +104,64 @@ class Service {
 ```
 
 ### Life Time control.
-> By default, containers resolve singletons when registering with **useClass**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
+> By default, containers resolve singletons when using **useClass** and **useFactory**.
+Default life time for all items in a container can be set by passing an option object to it's contructor with **defailtLifeTime** attribute. Possible values: **LifeTime.PerRequest** (resolves instances) and **LifeTime.Persistent** (resolves singletons);
 
 ```typescript
 import { LifeTime } from 'container-ioc';
 
+const container = new Container({
+    defaultLifeTime: LifeTime.PerRequest
+});
+```
+> You can also specify life time individually for each item in a container by specifying **lifeTime** attribute.
+
+```typescript
 container.register([
-    { token: TService, useClass: Service, lifeTime: LifeTime.PerRequest }
+    {
+        token: TService,
+        useClass: Service,
+        lifeTime: LifeTime.PerRequest
+    }
+]);
+```
+```typescript
+container.register([
+    {
+        token: TService,
+        useFactory: () => {
+            return {
+                serve(): void {}
+            }
+        },
+        lifeTime: LifeTime.Persistent
+    }
 ]);
 ```
 
 ### Hierarchical containers.
-> If container can't find value, it will look it up in ascendant containers.
+> If a container can't find a value within itself, it will look it up in ascendant containers. There a 3 ways to set a parent for a container.
+
+###### 1. Container.createChild() method.
 ```typescript
-
-let parentContainer = new Container();
-let childContainer = parentContainer.createChild();
-
-parentContainer.register({ token: TApplication, useClass: Application });
-
-childContainer.resolve(TApplication);
+const parentContainer = new Container();
+const childContainer = parentContainer.createChild();
 ```
-> You can also assign parent container to any other container
+
+###### 2. Container.setParent() method.
 ```typescript
-let parent = new Container();
-let child = new Container();
+const parent = new Container();
+const child = new Container();
 
 child.setParent(parent);
+```
+
+###### 3. Via Container's constructor with options.
+```typescript
+const parent = new Container();
+const child = new Container({
+    parent: parent
+});
 ```
 
 ### Using Factories
