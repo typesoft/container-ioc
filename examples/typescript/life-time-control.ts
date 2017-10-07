@@ -1,9 +1,9 @@
 import { Container, Injectable, LifeTime } from 'container-ioc';
 
-const container = new Container();
-
 @Injectable()
 class A {}
+
+const container = new Container();
 
 container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
 

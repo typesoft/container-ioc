@@ -2,23 +2,25 @@ import { Container, Injectable, Inject } from 'container-ioc';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
-const container = new Container();
-
 interface IService {
     [key: string]: any;
 }
 
+const TService = Symbol('IService');
+
 @Injectable()
 class App {
-    constructor(@Inject('IUseFactory') private service: IService) {}
+    constructor(@Inject(TService) private service: IService) {}
 }
 
-class Service {}
+class Service implements IService {}
+
+const container = new Container();
 
 container.register([
     { token: App, useClass: App },
     {
-        token: 'IUseFactory',
+        token: TService,
         useFactory: () => {
             return new Service();
         }

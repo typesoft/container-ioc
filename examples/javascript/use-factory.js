@@ -1,22 +1,24 @@
 import { Container, Injectable } from 'container-ioc';
 
-const container = new Container();
+const TService = Symbol('IService');
 
-@Injectable(['IUseFactory'])
+@Injectable([TService])
 class App {
-    constructor(service) {
-        this.service = service;
-    }
+    constructor(service) {}
 }
 
-class Service {}
+const container = new Container();
 
 container.register([
     { token: App, useClass: App },
     {
-        token: 'IUseFactory',
+        token: TService,
         useFactory: () => {
-            return new Service();
+            return {
+                serve () {
+                    // do stuff
+                }
+            };
         }
     }
 ]);

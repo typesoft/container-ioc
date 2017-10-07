@@ -1,8 +1,10 @@
 import { Container, Injectable } from 'container-ioc';
 
-const container = new Container();
+const TService = Symbol('IService');
 
-@Injectable(['IUserFactory'])
+const TManager = Symbol('IManager');
+
+@Injectable([TService])
 class App {
     constructor(service) {
         this.service = service;
@@ -12,15 +14,20 @@ class App {
 @Injectable()
 class Service {}
 
+@Injectable()
+class Manager {}
+
+const container = new Container();
+
 container.register([
     { token: App, useClass: App },
-    { token: 'IService', useClass: Service },
+    { token: TManager, useClass: Manager },
     {
-        token: 'IUseFactory',
-        useFactory: (service) => {
-            return service;
+        token: TService,
+        useFactory: (manager) => {
+            return manager;
         },
-        inject: ['IService']
+        inject: ['IConfig']
     }
 ]);
 
