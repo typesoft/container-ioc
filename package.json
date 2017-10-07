@@ -5,7 +5,7 @@
   "author": "Alexander Kozlov",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thohoh/container-ioc.git"
+    "url": "git+https://github.com/typesoft/container-ioc.git"
   },
   "keywords": [
     "ioc",
