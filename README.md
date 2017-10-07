@@ -23,9 +23,8 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 * [examples/javascript](examples/javascript)
 * [examples/typescript](examples/typescript)
 
-### Quick start
 
-#### Installation:
+### Installation:
 ```
 npm install --save container-ioc
 ```
