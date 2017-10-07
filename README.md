@@ -91,7 +91,7 @@ let app = container.resolve(TApplication);
 app.run();
 ```
 
-#### Step 2 for Javascript:
+#### Step 2 for Javascript.
 > Since Javascript does not support parameter decorators, use alternative API for declaring dependencies. In this case we don't use **Inject** decorator. See [examples/javascript](examples/javascript) for more.
 ```javascript
 
@@ -115,7 +115,7 @@ container.register([
 ```
 
 ### Hierarchical containers.
-> If container can't fined value, it will look it up in ascendant containers.
+> If container can't find value, it will look it up in ascendant containers.
 ```typescript
 
 let parentContainer = new Container();
@@ -125,7 +125,7 @@ parentContainer.register({ token: TApplication, useClass: Application });
 
 childContainer.resolve(TApplication);
 ```
-> You can also assign parent container to any onther container
+> You can also assign parent container to any other container
 ```typescript
 let parent = new Container();
 let child = new Container();
