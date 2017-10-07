@@ -1,6 +1,6 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, LifeTime, ProviderToken, RegistrationProvider } from './interfaces';
 import { FactoryFunction, IFactory, IRegistryData, RegistryData } from './registry-data';
-import { IContainer } from './container.interface';
+import { IContainer, IContainerOptions } from './container.interface';
 import { InvalidProviderProvidedError, NoProviderError } from './exceptions';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
@@ -9,9 +9,17 @@ import { AnnotatorProvider } from './metadata/index';
 const MetadataAnnotator: IMetadataAnnotator = AnnotatorProvider.get();
 
 export class Container implements IContainer {
+    private static DEFAULT_LIFE_TIME = LifeTime.Persistent;
     private registry: Map<ProviderToken, IRegistryData> = new Map();
+    private parent: IContainer;
+    private defaultLifeTime: LifeTime = Container.DEFAULT_LIFE_TIME;
 
-    constructor(private parent?: IContainer) {}
+    constructor(options?: IContainerOptions) {
+        if (options) {
+            this.parent = <IContainer> options.parent;
+            this.defaultLifeTime = options.defaultLifeTime || this.defaultLifeTime;
+        }
+    }
 
     public register(provider: RegistrationProvider|RegistrationProvider[]): void {
         provider = this.nornalizeProvider(provider);
@@ -29,11 +37,11 @@ export class Container implements IContainer {
     }
 
     public createScope(): IContainer {
-        return new Container(this);
+        return new Container({ parent: this });
     }
 
     public createChild(): IContainer {
-        return new Container(this);
+        return this.createScope();
     }
 
     public setParent(parent: IContainer): void {
@@ -90,7 +98,7 @@ export class Container implements IContainer {
                 registryData.factory.inject = this.convertTokensToInjectionMd(<ProviderToken> provider.inject);
             }
 
-            registryData.lifeTime = provider.lifeTime || LifeTime.Persistent; // TODO issue #88
+            registryData.lifeTime = provider.lifeTime || this.defaultLifeTime;
         }
 
         this.registry.set(provider.token, registryData);
