@@ -299,6 +299,7 @@ describe('Container', () => {
                 container.register({ token: 'IA', useClass: A });
 
                 const throwableFunc = () => container.resolve('IA');
+
                 expect(throwableFunc).to.throw('No provider for IB. Trace: IA --> IB');
             });
         });
