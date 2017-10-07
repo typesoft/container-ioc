@@ -1,3 +1,13 @@
+<a name="1.7.3"></a>
+# [1.7.3]() (2017-10-07)
+
+### API changes
+#### Container
+* **Added option parameter to constructor**. - options object has two attributes: (parent and defaultLifeTime).
+
+### Fixed
+* **Factories always resolve instances**.
+
 <a name="1.7.0"></a>
 # [1.7.0]() (2017-10-07)
 
