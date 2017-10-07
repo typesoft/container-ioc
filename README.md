@@ -137,7 +137,7 @@ const container = new Container({
 ```
 
 ### Hierarchical containers.
-> If container can't find a value within itself, it will look it up in ascendant containers. There a 3 ways to set a parent for a container.
+> If a container can't find a value within itself, it will look it up in ascendant containers. There a 3 ways to set a parent for a container.
 
 ###### 1. Container.createChild() method.
 ```typescript
