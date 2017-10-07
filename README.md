@@ -104,7 +104,7 @@ class Service {
 ```
 
 ### Life Time control.
-> By default, containers resolve singletons when **useClass** and **useFactory**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
+> By default, containers resolve singletons when using **useClass** and **useFactory**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
 
 ```typescript
 import { LifeTime } from 'container-ioc';
