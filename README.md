@@ -32,7 +32,7 @@ npm install --save container-ioc
 ### Basics:
 > Code examples below are written in Typescript. Check [examples/javascript](examples/javascript) for examples written in Javascript.
 
-##### Step 1. Define your interfaces and types.
+#### Step 1. Define your interfaces and types.
 > Possible values for types: **Symbol**, **string**, **Object**.
 
 ```typescript
@@ -49,7 +49,7 @@ const TApplication = Symbol('IApplication');
 const TService = Symbol('IService');
 ```
 
-##### Step 2. Declare dependencies with decorators **Injectable** and **Inject**.
+#### Step 2. Declare dependencies with decorators **Injectable** and **Inject**.
 
 ```typescript
 import { Injectable, Inject } from 'contaienr-ioc';
@@ -71,7 +71,7 @@ export class Service implements IService {
 }
 ```
 
-###### Step 3. Create a container and register types in there.
+#### Step 3. Create a container and register types in there.
 
 ```typescript
 import { Container } from 'container-ioc';
@@ -84,7 +84,7 @@ contaoner.register([
 ]);
 ```
 
-###### Step 4. Resolve value from the container.
+#### Step 4. Resolve value from the container.
 
 ```typescript
 let app = container.resolve(TApplication);
