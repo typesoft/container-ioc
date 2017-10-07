@@ -104,11 +104,19 @@ class Service {
 ```
 
 ### Life Time control.
-> By default, containers resolve singletons when using **useClass** and **useFactory**. You can specify life time individually for each item in a container by setting **lifeTime** attribute to **LifeTime.PerRequest**.
+> By default, containers resolve singletons when using **useClass** and **useFactory**.
+Default life time for all items in a container can be set by passing an option object to it's contructor with **defailtLifeTime** attribute. Possible values: **LifeTime.PerRequest** (resolves instances) and **LifeTime.Persistent** (resolves singletons);
 
 ```typescript
 import { LifeTime } from 'container-ioc';
 
+const container = new Container({
+    defaultLifeTime: LifeTime.PerRequest
+});
+```
+> You can also specify life time individually for each item in a container by specifying **lifeTime** attribute.
+
+```typescript
 container.register([
     {
         token: TService,
@@ -126,14 +134,9 @@ container.register([
                 serve(): void {}
             }
         },
-        lifeTime: LifeTime.PerRequest }
+        lifeTime: LifeTime.Persistent
+    }
 ]);
-```
-> Or you can set default life time for all items in a container by passing an option object.
-```typescript
-const container = new Container({
-    defaultLifeTime: LifeTime.PerRequest
-});
 ```
 
 ### Hierarchical containers.
