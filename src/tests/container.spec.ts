@@ -288,6 +288,19 @@ describe('Container', () => {
                 const throwableFunc = () => container.resolve('IA');
                 expect(throwableFunc).to.throw();
             });
+
+            it('should print Symbol types properly', () => {
+                const TB = Symbol('IB');
+
+                @Injectable()
+                class A {
+                    constructor(@Inject(TB) private b: any) {}
+                }
+                container.register({ token: 'IA', useClass: A });
+
+                const throwableFunc = () => container.resolve('IA');
+                expect(throwableFunc).to.throw('No provider for IB. Trace: IA --> IB');
+            });
         });
 
     });
