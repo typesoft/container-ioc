@@ -32,6 +32,14 @@ export class Container implements IContainer {
         return new Container(this);
     }
 
+    public setParent(parent: IContainer): void {
+        this.parent = parent;
+    }
+
+    public createChild(): IContainer {
+        return new Container(this);
+    }
+
     private resolveInternal(token: ProviderToken, traceMessage?: string): IInjectionInstance {
         traceMessage = this.buildTraceMessage(token, traceMessage);
 
