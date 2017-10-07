@@ -51,7 +51,7 @@ const TService = Symbol('IService');
 #### Step 2. Declare dependencies with decorators **Injectable** and **Inject**.
 
 ```typescript
-import { Injectable, Inject } from 'contaienr-ioc';
+import { Injectable, Inject } from 'container-ioc';
 
 @Injectable()
 export class Application implements IApplication {
@@ -104,7 +104,7 @@ class Service {
 ```
 
 ### Life Time control.
-> By default, containers resolve singletons, meaning they have **lifeTime** attribute set to **LifeTime.Persistant**. You can set it to **LifeTime.PerRequest**.
+> By default, containers resolve singletons when registering with **useClass**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
 
 ```typescript
 import { LifeTime } from 'container-ioc';
