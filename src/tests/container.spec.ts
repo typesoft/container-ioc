@@ -91,7 +91,7 @@ describe('Container', () => {
             expect(instance instanceof TestClass).to.be.true;
         });
 
-        it('should resolve ф value when registered with "useFactory"', () => {
+        it('should resolve value when registered with "useFactory"', () => {
             container.register({
                 token: 'V',
                 useFactory: () => {
@@ -144,7 +144,7 @@ describe('Container', () => {
         });
 
         describe('LifeTime', () => {
-            it('should resolve a singleton instance if LifeTime was not specified', () => {
+            it('should resolve a singleton by default if LifeTime was not specified with useClass', () => {
                 @Injectable()
                 class A {}
 
@@ -156,7 +156,40 @@ describe('Container', () => {
                 expect(instance1).to.be.equal(instance2);
             });
 
-            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest', () => {
+            it('should resolve a singleton by default if LifeTime was not specified with useFactory', () => {
+                class A {}
+
+                container.register([
+                    {
+                        token: A,
+                        useFactory: () => new A()
+                    }
+                ]);
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).to.be.equal(instance2);
+            });
+
+            it('should resolve an instance with useFactory if LifeTime was set to LifeTime.PerRequest', () => {
+                class A {}
+
+                container.register([
+                    {
+                        token: A,
+                        useFactory: () => new A(),
+                        lifeTime: LifeTime.PerRequest
+                    }
+                ]);
+
+                const instance1 = container.resolve(A);
+                const instance2 = container.resolve(A);
+
+                expect(instance1).not.to.be.equal(instance2);
+            });
+
+            it('should resolve an instances if LifeTime was set to LifeTime.PerRequest', () => {
                 @Injectable()
                 class A {}
 
@@ -168,7 +201,7 @@ describe('Container', () => {
                 expect(instance1).not.to.be.equal(instance2);
             });
 
-            it('should resolve a different instances if LifeTime was set to LifeTime.PerRequest in case of nested dependencies', () => {
+            it('should resolve different instances if LifeTime was set to LifeTime.PerRequest in case of nested dependencies', () => {
                 @Injectable()
                 class A {
                     constructor(@Inject('IB') private b: any) {}
@@ -308,7 +341,7 @@ describe('Container', () => {
 
     describe('createScope()', () => {
         it('should create child scope', () => {
-            const childContainer: any = container.createScope();
+            const childContainer: any = container.createChild();
             expect(childContainer).to.be.ok;
             expect(childContainer.parent).to.equal(container);
         });

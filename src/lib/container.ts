@@ -1,7 +1,7 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, LifeTime, ProviderToken, RegistrationProvider } from './interfaces';
-import { IRegistryData, RegistryData } from './registry-data';
+import { FactoryFunction, IFactory, IRegistryData, RegistryData } from './registry-data';
 import { IContainer } from './container.interface';
-import { ClassNotInjectableError, InvalidProviderProvidedError, NoProviderError } from './exceptions';
+import { InvalidProviderProvidedError, NoProviderError } from './exceptions';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
 import { AnnotatorProvider } from './metadata/index';
@@ -32,12 +32,12 @@ export class Container implements IContainer {
         return new Container(this);
     }
 
-    public setParent(parent: IContainer): void {
-        this.parent = parent;
-    }
-
     public createChild(): IContainer {
         return new Container(this);
+    }
+
+    public setParent(parent: IContainer): void {
+        this.parent = parent;
     }
 
     private resolveInternal(token: ProviderToken, traceMessage?: string): IInjectionInstance {
@@ -56,24 +56,7 @@ export class Container implements IContainer {
             return registryData.instance;
         }
 
-        if (registryData.factory) {
-            let injections: ProviderToken[] = [];
-
-            if (registryData.injections) {
-                injections = registryData.injections.map(i => this.resolveInternal(i, traceMessage));
-            }
-
-            return registryData.factory(...injections);
-        }
-
-        const constructor: IConstructor = registryData.cls;
-
-        const isInjectable: boolean = this.isInjectable(constructor);
-        if (!isInjectable) {
-            throw new ClassNotInjectableError(constructor.name);
-        }
-
-        const instance: IInjectionInstance = this.createInstance(constructor, traceMessage);
+        const instance: IInjectionInstance = this.instantiateWithFactory(registryData.factory, traceMessage);
 
         if (registryData.lifeTime === LifeTime.Persistent) {
             registryData.instance = instance;
@@ -92,28 +75,57 @@ export class Container implements IContainer {
 
         if (provider.useValue) {
             registryData.instance = provider.useValue;
-        } else if (provider.useClass) {
-            registryData.cls = provider.useClass;
-        } else if (provider.useFactory) {
-            registryData.factory = provider.useFactory;
-            registryData.injections = <ProviderToken[]> provider.inject;
-        }
+        } else {
+            const factoryValue = provider.useFactory || provider.useClass;
+            const isClass: boolean = this.isInjectable(factoryValue);
 
-        registryData.lifeTime = provider.lifeTime || LifeTime.Persistent;
+            registryData.factory = {
+                value: factoryValue,
+                isClass
+            };
+
+            if (isClass) {
+                registryData.factory.inject = this.retrieveInjectionsFromClass(<IConstructor> registryData.factory.value);
+            } else {
+                registryData.factory.inject = this.convertTokensToInjectionMd(<ProviderToken> provider.inject);
+            }
+
+            registryData.lifeTime = provider.lifeTime || LifeTime.Persistent; // TODO issue #88
+        }
 
         this.registry.set(provider.token, registryData);
     }
 
-    private createInstance(cls: IConstructor, message: string): IInjectionInstance {
-        const injectionsMd: IInjectionMd[] = this.getInjections(cls);
-        const resolvedInjections: any[] = injectionsMd.map(injectionMd => this.resolveInternal(injectionMd.token, message));
+    private convertTokensToInjectionMd(tokens: ProviderToken[]): IInjectionMd[] {
+        let injections: IInjectionMd[] = [];
+
+        if (tokens) {
+            injections = tokens.map((token: ProviderToken, index: number) => {
+                return {
+                    token,
+                    parameterIndex: index
+                };
+            });
+        }
+
+        return injections;
+    }
+
+    private instantiateWithFactory(factory: IFactory, traceMessage: string): IInjectionInstance {
+        const injections = <IInjectionMd[]> factory.inject;
+
+        const resolvedInjections: any[] = injections.map(injection => this.resolveInternal(injection.token, traceMessage));
 
         const args: any[] = [];
-        injectionsMd.forEach((injection: IInjectionMd, index) => {
+        injections.forEach((injection: IInjectionMd, index: number) => {
             args[injection.parameterIndex] = resolvedInjections[index];
         });
 
-        return new cls(...args);
+        if (factory.isClass) {
+            return new (<IConstructor> factory.value)(...args);
+        } else {
+            return (<FactoryFunction> factory.value)(...args);
+        }
     }
 
     private nornalizeProvider(provider: RegistrationProvider|RegistrationProvider[]): IProvider {
@@ -167,7 +179,8 @@ export class Container implements IContainer {
         return !!(MetadataAnnotator.getMetadata(INJECTABLE_MD_KEY, cls));
     }
 
-    private getInjections(cls: any): IInjectionMd[] {
-        return MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, cls) || [];
+    private retrieveInjectionsFromClass(cls: IConstructor): IInjectionMd[] {
+        const injections: IInjectionMd[] = MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, cls) || [];
+        return this.convertTokensToInjectionMd(injections);
     }
 }

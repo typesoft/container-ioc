@@ -104,13 +104,21 @@ class Service {
 ```
 
 ### Life Time control.
-> By default, containers resolve singletons when registering with **useClass**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
+> By default, containers resolve singletons when **useClass** and **useFactory**. Change it by setting **lifeTime** attribute to **LifeTime.PerRequest**.
 
 ```typescript
 import { LifeTime } from 'container-ioc';
 
 container.register([
     { token: TService, useClass: Service, lifeTime: LifeTime.PerRequest }
+]);
+```
+```typescript
+container.register([
+    {
+        token: TService,
+        useFactory: () => { serve(): void {} },
+        lifeTime: LifeTime.PerRequest }
 ]);
 ```
 
