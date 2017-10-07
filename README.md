@@ -19,44 +19,84 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 * Descriptive error messages.
 * 97% test coverage.
 
+### Examples:  
+* [examples/javascript](examples/javascript)
+* [examples/typescript](examples/typescript)
+
 ### Quick start
 
 #### Installation:
 ```
 npm install --save container-ioc
 ```
+### Basics:
+> Code examples below are written in Typescript. Check [examples/javascript](examples/javascript) for examples written in Javascript.
 
-#### Typescript:
+##### Step 1. Define your interfaces and types.
+> Possible values for types: **Symbol**, **string**, **Object**.
+
 ```typescript
-import { Container, Inject, Injectable } from 'container-ioc';
+interface IApplication {
+    run(): void;
+}
+
+interface IService {
+    serve(): void;
+}
+
+const TApplication = Symbol('IApplication');
+
+const TService = Symbol('IService');
+```
+
+##### Step 2. Declare dependencies with decorators **Injectable** and **Inject**.
+
+```typescript
+import { Injectable, Inject } from 'contaienr-ioc';
+
+@Injectable()
+export class Application implements IApplication {
+    constructor(Inject('TService') private service: ISerivce) {}
+    
+    run(): void {
+        this.service.serve();
+    }
+}
+
+@Injectabe()
+export class Service implements IService {
+    serve(): void {
+        // serves
+    }
+}
+```
+
+###### Step 3. Create a container and register types in there.
+
+```typescript
+import { Container } from 'container-ioc';
 
 let container = new Container();
 
-@Injectable()
-class App {}
-
-interface IService {}
-
-@Injectable()
-class Service implements IService {
-    constructor(@Inject('IService') public service: IService) {}
-}
-
-let providers = [
-    { token: App, useClass: App }, 
-    { token: 'IService', useClass: Service }
-];
-
-container.register(providers);
-
-let app = container.resolve(App);
+contaoner.register([
+    { token: TApplication, useClass: Application },
+    { token: TService, useClass: Service }
+]);
 ```
 
-#### Javascript:
-> Use alternative syntax for declaring injections shown below and don't use interfaces. See [examples/javascript](examples/javascript) for more.
+###### Step 4. Resolve value from the container.
+
+```typescript
+let app = container.resolve(TApplication);
+
+app.run();
+```
+
+#### Step 2 for Javascript:
+> Since Javascript does not support parameter decorators, use alternative API for declaring dependencies. In this case we don't use **Inject** decorator. See [examples/javascript](examples/javascript) for more.
 ```javascript
 
-@Injectable(['IService'])
+@Injectable([TService])
 class Service {
     constructor(service) {
         this.service = service;
@@ -64,45 +104,34 @@ class Service {
 }
 ```
 
-### Examples:  
-* [examples/javascript](examples/javascript)
-* [examples/typescript](examples/typescript)
-
-## Code examples below are written in Typescript.
-
 ### Life Time control.
-> By default, containers resolve singletons. You can change that by setting provider's attribute **LifeTime**  to **LifeTime.PerRequest**.
+> By default, containers resolve singletons, meaning they have **lifeTime** attribute set to **LifeTime.Persistant**. You can set it to **LifeTime.PerRequest**.
+
 ```typescript
-import { Container, Injectable, LifeTime } from 'container-ioc';
-
-const container = new Container();
-
-@Injectable()
-class A {}
+import { LifeTime } from 'container-ioc';
 
 container.register([
-    { token: A, useClass: A, lifeTime: LifeTime.PerRequest }
+    { token: TService, useClass: Service, lifeTime: LifeTime.PerRequest }
 ]);
-
-const instance1 = container.resolve(A);
-const instance2 = container.resolve(A);
 ```
 
 ### Hierarchical containers.
-> If a provider wasn't found in a container it will look up in ascendant containers if there are any:
+> If container can't fined value, it will look it up in ascendant containers.
 ```typescript
-import { Container } from 'container-ioc';
-
-@Injectable()
-class A {}
 
 let parentContainer = new Container();
-let childContainer = parentContainer.createScope();
+let childContainer = parentContainer.createChild();
 
-parentContainer.register({ token: 'IA', useClass: A });
+parentContainer.register({ token: TApplication, useClass: Application });
 
-childContainer.resolve('IA');
+childContainer.resolve(TApplication);
+```
+> You can also assign parent container to any onther container
+```typescript
+let parent = new Container();
+let child = new Container();
 
+child.setParent(parent);
 ```
 
 ### Using Factories
@@ -150,35 +179,6 @@ container.register([
     { token: App, useClass: App }
 ]);
 ```
-
-### Best Practise, use InjectionToken
-> Use **InjectionToken** instances for tokens instead of string/class literals, 
-it saves from using hardcoded string and **helps in keeping abstractions intact**.
-
-Before:
-```typescript
-interface IService {}
-
-@Injectable()
-class ConcreteService {}
-
-container.register({ token: 'IService', useClass: ConcreteService });
-container.resolve('IService');
-```
-After:
-
-```typescript
-interface IService {}
-
-const TService = new InjectionToken<IService>('IService'); // T stands for Token, you can pick another prefix
-
-@Injectable()
-class ConcreteService {}
-
-container.register({ token: TService, useClass: ConcreteService });
-container.resolve(TService);
-```
-
 
 ## Contribution:
 Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
