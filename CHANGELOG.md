@@ -1,3 +1,14 @@
+<a name="1.7.0"></a>
+# [1.7.0]() (2017-10-07)
+
+### API changes
+#### Container
+* **Container.createScope() is marked as deprecated, use Container.createChild() instead+**.
+* **Added method Container.setParent()**.
+
+### Fixed
+* **Symbol values for types are now properly handled in error messages**.
+
 <a name="1.6.8"></a>
 # [1.6.8]() (2017-10-05)
 
