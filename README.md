@@ -23,11 +23,6 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 * [examples/javascript](examples/javascript)
 * [examples/typescript](examples/typescript)
 
-### Contribution
-Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
-
-see [CONTRIBUTION.md](CONTRIBUTION.md) for more information.
-
 
 ### Installation:
 ```
@@ -214,3 +209,8 @@ container.register([
     { token: App, useClass: App }
 ]);
 ```
+
+### Contribution
+Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
+
+see [CONTRIBUTION.md](CONTRIBUTION.md) for more information.
