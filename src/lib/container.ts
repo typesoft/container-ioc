@@ -137,9 +137,17 @@ export class Container implements IContainer {
     private getTokenString(token: ProviderToken): string {
         if (typeof token === 'function') {
             return (<IConstructor> token).name;
+        } else if (typeof token === 'symbol') {
+            return this.symbol2string(token);
         } else {
             return `${token}`;
         }
+    }
+
+    private symbol2string(symbol: symbol): string {
+        const regExp = /\(([^)]+)\)/;
+        const matches = regExp.exec(symbol.toString());
+        return matches[1];
     }
 
     private isInjectable(cls: IConstructor): boolean {
