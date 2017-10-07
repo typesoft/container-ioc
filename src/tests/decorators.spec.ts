@@ -89,6 +89,48 @@ describe('Decorators', () => {
 
             expect(instance.a).to.be.instanceOf(A);
         });
+
+        it('should chain with other decorators', () => {
+
+            function RandomDecorator() {
+                return (target: any) => {
+                    target.works = true;
+                };
+            }
+
+            @Injectable()
+            @RandomDecorator()
+            class A {
+                static works: boolean;
+            }
+
+            container.register([
+                { token: 'IA', useClass: A }
+            ]);
+
+            expect(A.works).to.be.true;
+        });
+
+        it('should chain with other decorators', () => {
+
+            function RandomDecorator() {
+                return (target: any) => {
+                    target.works = true;
+                };
+            }
+
+            @RandomDecorator()
+            @Injectable()
+            class A {
+                static works: boolean;
+            }
+
+            container.register([
+                { token: 'IA', useClass: A }
+            ]);
+
+            expect(A.works).to.be.true;
+        });
     });
 
     describe('@Injectable()', () => {
