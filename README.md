@@ -13,9 +13,9 @@ is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) 
 ### Features:
 * Well-known Angular DI API.
 * No external dependencies.
-* Life Time control.
-* Hierarchical containers.
-* Resolves values using Classes, Factories and Values.
+* [Life Time control](#life-time-control).
+* [Hierarchical containers](#hierarchical-containers).
+* Resolves values using Classes, [Factories](#using-factories) and [Values](#using-Values).
 * Descriptive error messages.
 * 97% test coverage.
 
@@ -103,7 +103,7 @@ class Service {
 }
 ```
 
-### Life Time control.
+### Life Time control
 > By default, containers resolve singletons when using **useClass** and **useFactory**.
 Default life time for all items in a container can be set by passing an option object to it's contructor with **defailtLifeTime** attribute. Possible values: **LifeTime.PerRequest** (resolves instances) and **LifeTime.Persistent** (resolves singletons);
 
@@ -139,7 +139,7 @@ container.register([
 ]);
 ```
 
-### Hierarchical containers.
+### Hierarchical containers
 > If a container can't find a value within itself, it will look it up in ascendant containers. There a 3 ways to set a parent for a container.
 
 ###### 1. Container.createChild() method.
@@ -210,7 +210,7 @@ container.register([
 ]);
 ```
 
-## Contribution:
+## Contribution
 Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
 
 see [CONTRIBUTION.md](CONTRIBUTION.md) for more information.
