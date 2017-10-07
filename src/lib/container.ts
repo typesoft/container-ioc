@@ -147,7 +147,12 @@ export class Container implements IContainer {
     private symbol2string(symbol: symbol): string {
         const regExp = /\(([^)]+)\)/;
         const matches = regExp.exec(symbol.toString());
-        return matches[1];
+
+        if (matches) {
+            return matches[1];
+        } else {
+            throw new Error(`Symbol name couldn't be retrieved, please check if it's not empty`);
+        }
     }
 
     private isInjectable(cls: IConstructor): boolean {
