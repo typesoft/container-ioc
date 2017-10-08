@@ -55,7 +55,7 @@ import { Injectable, Inject } from 'container-ioc';
 
 @Injectable()
 export class Application implements IApplication {
-    constructor(@Inject(TService) private service: ISerivce) {}
+    constructor(@Inject(TService) private service: IService) {}
     
     run(): void {
         this.service.serve();
