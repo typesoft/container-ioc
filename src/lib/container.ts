@@ -155,12 +155,11 @@ export class Container implements IContainer {
         return normalizedProvider;
     }
 
-    // TODO move into a helper service
     private normalizeSingleProvider(provider: RegistrationProvider): IProvider {
         if (typeof provider === 'function') {
             provider = { token: <IConstructor> provider, useClass: <IConstructor> provider };
         } else if (!(provider instanceof Object)) {
-            throw new InvalidProviderProvidedError();
+            throw new InvalidProviderProvidedError(provider);
         }
         return <IProvider> provider;
     }

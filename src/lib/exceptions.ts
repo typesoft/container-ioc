@@ -1,9 +1,8 @@
 /* tslint:disable: max-classes-per-file */
 
-// TODO write a test suit
 export class InvalidProviderProvidedError extends Error {
-    constructor() {
-        super('Invalid Provider was provided');
+    constructor(provider: any) {
+        super(`${JSON.stringify(provider)} - is not a valid provider.`);
     }
 }
 
