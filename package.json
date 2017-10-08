@@ -1,6 +1,6 @@
 {
   "name": "container-ioc",
-  "version": "1.7.6",
+  "version": "1.7.8",
   "description": "Dependency Injection and Inversion of Control (IoC) container",
   "author": "Alexander Kozlov",
   "repository": {
