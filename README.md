@@ -62,7 +62,7 @@ export class Application implements IApplication {
     }
 }
 
-@Injectabe()
+@Injectable()
 export class Service implements IService {
     serve(): void {
         // serves
@@ -77,7 +77,7 @@ import { Container } from 'container-ioc';
 
 let container = new Container();
 
-contaoner.register([
+container.register([
     { token: TApplication, useClass: Application },
     { token: TService, useClass: Service }
 ]);
