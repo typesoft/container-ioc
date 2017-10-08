@@ -340,10 +340,10 @@ describe('Container', () => {
                 container.register({ token: 'IA', useClass: A });
 
                 const throwableFunc = () => container.resolve('IA');
-                expect(throwableFunc).to.throw();
+                expect(throwableFunc).to.throw(`Class A is not injectable. Check if it's decorated with @Injectable() decorator`);
             });
 
-            it('should print Symbol types properly', () => {
+            it('should print Symbol types properly in error messages', () => {
                 const TB = Symbol('IB');
 
                 @Injectable()

@@ -1,7 +1,7 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, LifeTime, ProviderToken, RegistrationProvider } from './interfaces';
 import { FactoryFunction, IFactory, IRegistryData, RegistryData } from './registry-data';
 import { IContainer, IContainerOptions } from './container.interface';
-import { InvalidProviderProvidedError, NoProviderError } from './exceptions';
+import { ClassNotInjectableError, InvalidProviderProvidedError, NoProviderError } from './exceptions';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
 import { AnnotatorProvider } from './metadata/index';
@@ -85,7 +85,7 @@ export class Container implements IContainer {
             registryData.instance = provider.useValue;
         } else {
             const factoryValue = provider.useFactory || provider.useClass;
-            const isClass: boolean = this.isInjectable(factoryValue);
+            const isClass: boolean = !!provider.useClass;
 
             registryData.factory = {
                 value: factoryValue,
@@ -120,6 +120,14 @@ export class Container implements IContainer {
     }
 
     private instantiateWithFactory(factory: IFactory, traceMessage: string): IInjectionInstance {
+        if (factory.isClass) {
+            const injectable: boolean = this.isInjectable(<IConstructor> factory.value);
+
+            if (!injectable) {
+                throw new ClassNotInjectableError((<IConstructor> factory.value).name);
+            }
+        }
+
         const injections = <IInjectionMd[]> factory.inject;
 
         const resolvedInjections: any[] = injections.map(injection => this.resolveInternal(injection.token, traceMessage));

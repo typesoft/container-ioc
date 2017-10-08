@@ -9,7 +9,7 @@ export class InvalidProviderProvidedError extends Error {
 
 export class ClassNotInjectableError extends Error {
     constructor(constructorName: string) {
-        super(`Class ${constructorName} is not injectable`);
+        super(`Class ${constructorName} is not injectable. Check if it's decorated with @Injectable() decorator`);
     }
 }
 
