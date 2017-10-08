@@ -6,6 +6,7 @@ node_modules
 tsconfig.json
 tslint.json
 README.md
+CURRENT-CHANGELOG.txt
 
 examples
 gulpfile.js
