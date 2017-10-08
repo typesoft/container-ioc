@@ -7,8 +7,12 @@ const parentContainer = grandParentContainer.createChild();
 const childContainer = new Container();
 childContainer.setParent(parentContainer);
 
+const deepNestedContainer = new Container({
+    parent: childContainer
+});
+
 grandParentContainer.register([
     { token: 'IConfig', useValue: {}}
 ]);
 
-childContainer.resolve('IConfig');
+deepNestedContainer.resolve('IConfig');

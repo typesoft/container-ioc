@@ -1,13 +1,41 @@
-import { Container, Injectable, LifeTime } from 'container-ioc';
+import { Container, LifeTime, Injectable } from 'container-ioc';
 
-const container = new Container();
+/*
+    By default, containers resolve singletons when using useClass and useFactory.
+    Default life time for all items in a container can be set by passing an option object to it's contructor with **defailtLifeTime** attribute.
+    Possible values: LifeTime.PerRequest (resolves instances) and LifeTime.Persistent (resolves singletons);
+*/
+const container = new Container({
+    defaultLifeTime: LifeTime.PerRequest
+});
 
+/*
+    You can also specify life time individually for each item in a container by specifying lifeTime attribute.
+*/
 @Injectable()
-class A {}
+class ServiceA {}
 
-container.register({ token: A, useClass: A, lifeTime: LifeTime.PerRequest });
+/* With classes */
+container.register([
+    {
+        token: 'ISerivceA',
+        useClass: ServiceA,
+        lifeTime: LifeTime.PerRequest
+    }
+]);
 
-const instance1 = container.resolve(A);
-const instance2 = container.resolve(A);
+/* With factories */
+container.register([
+    {
+        token: 'IServiceB',
+        useFactory: () => {
+            return {
+                serve() {}
+            };
+        },
+        lifeTime: LifeTime.Persistent
+    }
+]);
 
-// instance1 !== instance2
+const service1 = container.resolve('IServiceA');
+const service2 = container.resolve('IServiceB');
