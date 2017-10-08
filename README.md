@@ -5,7 +5,7 @@
 is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [Inversion of Control (IoC) container](http://martinfowler.com/articles/injection.html) package for Javascript and Node.js applications powered by Typescript . It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
 
 [![npm version](https://badge.fury.io/js/container-ioc.svg)](https://badge.fury.io/js/container-ioc)
-[![Build Status](https://travis-ci.org/typesoft/container-ioc.svg?branch=master)](https://travis-ci.org/thohoh/container-ioc)
+[![Build Status](https://travis-ci.org/typesoft/container-ioc.svg?branch=master)](https://travis-ci.org/typesoft/container-ioc)
 [![npm](https://img.shields.io/npm/dt/container-ioc.svg)](https://www.npmjs.com/package/container-ioc)
 [![Gitter chat](https://badges.gitter.im/typesoft-org/container-ioc.png)](https://gitter.im/typesoft-org/container-ioc)
 [![license](https://img.shields.io/github/license/thohoh/container-ioc.svg)](https://github.com/thohoh/container-ioc/blob/master/LICENSE)
