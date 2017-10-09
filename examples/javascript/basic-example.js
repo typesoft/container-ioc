@@ -5,7 +5,7 @@ const TApplication = Symbol('IApplication');
 const TService = Symbol('IService');
 
 @Injectable([TService])
-export class Application implements IApplication {
+export class Application {
     constructor(service) {
         this.service = service;
     }
@@ -16,7 +16,7 @@ export class Application implements IApplication {
 }
 
 @Injectable()
-export class Service implements IService {
+export class Service {
     serve() {
         // serves
     }
