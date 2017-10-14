@@ -10,9 +10,9 @@ export function Injectable(injections?: ProviderToken[]) {
         MetadataAnnotator.defineMetadata(INJECTABLE_MD_KEY, true, target);
 
         if (injections && Array.isArray(injections)) {
-            const injectionMd: IInjectionMd[] = MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, target) || [];
-            injections.forEach(token => injectionMd.push(token));
-            MetadataAnnotator.defineMetadata(INJECTIONS_MD_KEY, injectionMd, target);
+            const injectionsMd: IInjectionMd[] = MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, target) || [];
+            injections.forEach(token => injectionsMd.push(token));
+            MetadataAnnotator.defineMetadata(INJECTIONS_MD_KEY, injectionsMd, target);
         }
     };
 }
@@ -20,7 +20,7 @@ export function Injectable(injections?: ProviderToken[]) {
 export function Inject(token: any) {
     return (target: object, propertyKey: string | symbol, parameterIndex: number) => {
         const injections: IInjectionMd[] = MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, target) || [];
-        injections.push(token);
+        injections[parameterIndex] = token;
         MetadataAnnotator.defineMetadata(INJECTIONS_MD_KEY, injections, target);
     };
 }

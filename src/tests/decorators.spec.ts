@@ -131,6 +131,37 @@ describe('Decorators', () => {
 
             expect(A.works).to.be.true;
         });
+
+        it('should inject parameters in the right order', () => {
+            @Injectable()
+            class A {}
+
+            @Injectable()
+            class B {}
+
+            @Injectable()
+            class C {
+                constructor(
+                    @Inject(A) public a: A,
+                    @Inject(B) public b: B
+                ) {
+
+                }
+            }
+
+            const providers = [
+                { token: A, useClass: A },
+                { token: B, useClass: B },
+                { token: C, useClass: C }
+            ];
+
+            container.register(providers);
+
+            const c = container.resolve(C);
+
+            expect(c.a).to.be.instanceof(A);
+            expect(c.b).to.be.instanceof(B);
+        });
     });
 
     describe('@Injectable()', () => {
@@ -151,6 +182,37 @@ describe('Decorators', () => {
 
             container.register(A);
             expect(() => container.resolve(A)).to.throw();
+        });
+
+        it('should inject parameters in the right order when using alternative way of declaring dependencies', () => {
+            @Injectable()
+            class A {}
+
+            @Injectable()
+            class B {}
+
+            @Injectable([A, B])
+            class C {
+                constructor(
+                    public a: A,
+                    public b: B
+                ) {
+
+                }
+            }
+
+            const providers = [
+                { token: A, useClass: A },
+                { token: B, useClass: B },
+                { token: C, useClass: C }
+            ];
+
+            container.register(providers);
+
+            const c = container.resolve(C);
+
+            expect(c.a).to.be.instanceof(A);
+            expect(c.b).to.be.instanceof(B);
         });
     });
 });
