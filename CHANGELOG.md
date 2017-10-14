@@ -1,3 +1,9 @@
+<a name="1.7.14"></a>
+# [1.7.14]() (2017-10-14)
+
+### Fixed
+* **Wrong injections order when using Inject decorator**.
+
 <a name="1.7.3"></a>
 # [1.7.3]() (2017-10-07)
 
