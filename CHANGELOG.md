@@ -1,3 +1,9 @@
+<a name="1.7.15"></a>
+# [1.7.15]() (2017-10-18)
+
+### Fixed
+* **Wrong hierarchical dependency resolution**.
+
 <a name="1.7.14"></a>
 # [1.7.14]() (2017-10-14)
 
