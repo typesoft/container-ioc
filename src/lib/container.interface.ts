@@ -10,6 +10,8 @@ export interface IContainer {
 
     resolve(token: ProviderToken): IInjectionInstance;
 
+    resolveInternal(token: ProviderToken, container: IContainer, traceMessage?: string): IInjectionInstance;
+
     /* @deprecated */
     createScope(): IContainer;
 

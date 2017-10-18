@@ -10,8 +10,10 @@ const MetadataAnnotator: IMetadataAnnotator = AnnotatorProvider.get();
 
 export class Container implements IContainer {
     private static DEFAULT_LIFE_TIME = LifeTime.Persistent;
+
     private registry: Map<ProviderToken, IRegistryData> = new Map();
     private parent: IContainer;
+
     private defaultLifeTime: LifeTime = Container.DEFAULT_LIFE_TIME;
 
     constructor(options?: IContainerOptions) {
@@ -33,7 +35,7 @@ export class Container implements IContainer {
     }
 
     public resolve(token: ProviderToken): IInjectionInstance {
-        return this.resolveInternal(token);
+        return this.resolveInternal(token, this);
     }
 
     public createScope(): IContainer {
@@ -48,7 +50,7 @@ export class Container implements IContainer {
         this.parent = parent;
     }
 
-    private resolveInternal(token: ProviderToken, traceMessage?: string): IInjectionInstance {
+    public resolveInternal(token: ProviderToken, container: IContainer, traceMessage?: string): IInjectionInstance {
         traceMessage = this.buildTraceMessage(token, traceMessage);
 
         const registryData = <IRegistryData> this.registry.get(token);
@@ -57,14 +59,14 @@ export class Container implements IContainer {
             if (!this.parent) {
                 throw new NoProviderError(this.getTokenString(token), traceMessage );
             }
-            return this.parent.resolve(token);
+            return this.parent.resolveInternal(token, container, traceMessage);
         }
 
         if (registryData.instance) {
             return registryData.instance;
         }
 
-        const instance: IInjectionInstance = this.instantiateWithFactory(registryData.factory, traceMessage);
+        const instance: IInjectionInstance = this.instantiateWithFactory(registryData.factory, container, traceMessage);
 
         if (registryData.lifeTime === LifeTime.Persistent) {
             registryData.instance = instance;
@@ -119,7 +121,7 @@ export class Container implements IContainer {
         return injections;
     }
 
-    private instantiateWithFactory(factory: IFactory, traceMessage: string): IInjectionInstance {
+    private instantiateWithFactory(factory: IFactory, container: IContainer, traceMessage: string): IInjectionInstance {
         if (factory.isClass) {
             const injectable: boolean = this.isInjectable(<IConstructor> factory.value);
 
@@ -130,7 +132,7 @@ export class Container implements IContainer {
 
         const injections = <IInjectionMd[]> factory.inject;
 
-        const resolvedInjections: any[] = injections.map(injection => this.resolveInternal(injection.token, traceMessage));
+        const resolvedInjections: any[] = injections.map(injection => container.resolveInternal(injection.token, container, traceMessage));
 
         const args: any[] = [];
         injections.forEach((injection: IInjectionMd, index: number) => {

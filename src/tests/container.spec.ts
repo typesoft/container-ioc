@@ -358,6 +358,84 @@ describe('Container', () => {
             });
         });
 
+        describe('Hierarchial', () => {
+            it(`should start looking up dependencies by starting from the container it's first entity was resolved from`, () => {
+
+                @Injectable()
+                class C {}
+
+                @Injectable()
+                class AscendantC {}
+
+                @Injectable()
+                class B {
+                    constructor(@Inject('IC') private c: C) {}
+                }
+
+                @Injectable()
+                class A {
+                    constructor(@Inject('IB') private b: B) {}
+                }
+
+                const childContainer = container.createChild();
+
+                container.register([
+                    { token: 'IB', useClass: B },
+                    { token: 'IC', useClass: AscendantC }
+                ]);
+
+                childContainer.register([
+                    { token: 'IA', useClass: A },
+                    { token: 'IC', useClass: C }
+                ]);
+
+                const a = childContainer.resolve('IA');
+
+                expect(a.b.c).to.be.instanceof(C);
+            });
+
+            it(`should start looking up dependencies by starting from the container it's first entity was resolved from`, () => {
+                @Injectable()
+                class D {}
+
+                @Injectable()
+                class C {
+                    constructor(@Inject('ID') public d: D) {}
+                }
+
+                @Injectable()
+                class AscendantC {}
+
+                @Injectable()
+                class B {
+                    constructor(@Inject('IC') public c: C) {}
+                }
+
+                @Injectable()
+                class A {
+                    constructor(@Inject('IB') public b: B) {}
+                }
+
+                const childContainer = container.createChild();
+
+                container.register([
+                    { token: 'IB', useClass: B },
+                    { token: 'IC', useClass: AscendantC },
+                    { token: 'ID', useClass: Function }
+                ]);
+
+                childContainer.register([
+                    { token: 'IA', useClass: A },
+                    { token: 'IC', useClass: C },
+                    { token: 'ID', useClass: D }
+                ]);
+
+                const a = childContainer.resolve('IA');
+
+                expect(a.b.c).to.be.instanceof(C);
+                expect(a.b.c.d).to.be.instanceof(D);
+            });
+        });
     });
 
     describe('Constructor', () => {
