@@ -1,3 +1,4 @@
+/* @deprecated */
 export class InjectionToken<T> {
     constructor(private description: string) {}
 
