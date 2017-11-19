@@ -6,6 +6,8 @@ export interface IContainerOptions {
 }
 
 export interface IContainer {
+    [key: string]: any;
+    
     register(provider: RegistrationProvider|RegistrationProvider[]): void;
 
     resolve(token: ProviderToken): IInjectionInstance;
@@ -19,3 +21,5 @@ export interface IContainer {
 
     setParent(parent: IContainer): void;
 }
+
+export const TContainer = Symbol('IContainer');

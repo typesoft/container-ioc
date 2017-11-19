@@ -1,4 +1,4 @@
-import { IContainer } from '../lib/container.interface';
+import { IContainer, TContainer } from '../lib/container.interface';
 import { Container } from '../lib/index';
 
 import 'mocha';
@@ -356,6 +356,21 @@ describe('Container', () => {
 
                 expect(throwableFunc).to.throw('No provider for IB. Trace: IA --> IB');
             });
+
+            it('should resolve container instance when injected into class Literal', () => {
+                // arrange
+                @Injectable()
+                class TestClass {
+                    constructor(@Inject(TContainer) public a: IContainer) {}
+                }
+                container.register({ token: TestClass, useClass: TestClass });
+                // act
+                const actual = container.resolve(TestClass);
+                // assert
+                expect(actual).to.be.ok;
+                expect(actual.a).to.be.ok;
+                expect(actual.a).to.equal(container);
+            });
         });
 
         describe('Hierarchial', () => {
@@ -449,6 +464,14 @@ describe('Container', () => {
 
             expect(instance1).not.to.be.equal(instance2);
         });
+
+        it('should register itself for injection', () => {
+            // arrange, act
+            const actual = container.resolve(TContainer);
+            // assert
+            expect(actual).to.be.ok;
+            expect(actual).to.equal(container);
+        });
     });
 
     describe('createChild()', () => {
@@ -471,5 +494,5 @@ describe('Container', () => {
 
             expect(value).to.be.equal('string');
         });
-    });
+    });    
 });
