@@ -17,6 +17,8 @@ export function Injectable(injections?: ProviderToken[]) {
     };
 }
 
+export const Component = Injectable;
+
 export function Inject(token: any) {
     return (target: object, propertyKey: string | symbol, parameterIndex: number) => {
         const injections: IInjectionMd[] = MetadataAnnotator.getMetadata(INJECTIONS_MD_KEY, target) || [];
