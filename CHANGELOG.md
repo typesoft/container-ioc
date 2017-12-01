@@ -1,3 +1,9 @@
+<a name="1.7.16"></a>
+# [1.7.16]() (2017-11-30)
+
+### Added 
+* **Component** decorator - functions the same as Injectable.
+
 <a name="1.7.15"></a>
 # [1.7.15]() (2017-10-18)
 
