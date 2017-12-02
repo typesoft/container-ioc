@@ -21,6 +21,7 @@ export class Container implements IContainer {
             this.parent = <IContainer> options.parent;
             this.defaultLifeTime = options.defaultLifeTime || this.defaultLifeTime;
         }
+        this.register({ token: Container, useValue: this });
     }
 
     public register(provider: RegistrationProvider|RegistrationProvider[]): void {

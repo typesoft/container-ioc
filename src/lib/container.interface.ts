@@ -5,7 +5,7 @@ export interface IContainerOptions {
     defaultLifeTime?: LifeTime;
 }
 
-export interface IContainer {
+export interface IContainer {    
     register(provider: RegistrationProvider|RegistrationProvider[]): void;
 
     resolve(token: ProviderToken): IInjectionInstance;
