@@ -1,4 +1,4 @@
-import { IContainer, TContainer } from '../lib/container.interface';
+import { IContainer } from '../lib/container.interface';
 import { Container } from '../lib/index';
 
 import 'mocha';
@@ -360,7 +360,7 @@ describe('Container', () => {
             it('should resolve container instance when injected into class Literal', () => {
                 @Injectable()
                 class TestClass {
-                    constructor(@Inject(TContainer) public a: IContainer) {}
+                    constructor(@Inject(Container) public a: IContainer) {}
                 }
 
                 container.register({ token: TestClass, useClass: TestClass });
@@ -465,7 +465,7 @@ describe('Container', () => {
         });
 
         it('should register itself for injection', () => {
-            const actual = container.resolve(TContainer);
+            const actual = container.resolve(Container);
 
             expect(actual).to.be.ok;
             expect(actual).to.equal(container);

@@ -19,5 +19,3 @@ export interface IContainer {
 
     setParent(parent: IContainer): void;
 }
-
-export const TContainer = Symbol('IContainer');

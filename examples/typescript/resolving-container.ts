@@ -1,10 +1,10 @@
-import { IContainer, Container, TContainer, Injectable, Inject } from 'container-ioc';
+import { IContainer, Container, Injectable, Inject } from 'container-ioc';
 
 const container = new Container();
 
 @Injectable()
 class Builder {
-    constructor(@Inject(TContainer) private container: IContainer) {}
+    constructor(@Inject(Container) private container: IContainer) {}
 }
 
 container.register({ token: Builder, useClass: Builder });

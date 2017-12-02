@@ -1,6 +1,6 @@
 import { IConstructor, IInjectionInstance, IInjectionMd, IProvider, LifeTime, ProviderToken, RegistrationProvider } from './interfaces';
 import { FactoryFunction, IFactory, IRegistryData, RegistryData } from './registry-data';
-import { IContainer, IContainerOptions, TContainer } from './container.interface';
+import { IContainer, IContainerOptions } from './container.interface';
 import { ClassNotInjectableError, InvalidProviderProvidedError, NoProviderError } from './exceptions';
 import { INJECTABLE_MD_KEY, INJECTIONS_MD_KEY } from './metadata/keys';
 import { IMetadataAnnotator } from './metadata/metadata-annotator.interface';
@@ -21,7 +21,7 @@ export class Container implements IContainer {
             this.parent = <IContainer> options.parent;
             this.defaultLifeTime = options.defaultLifeTime || this.defaultLifeTime;
         }
-        this.register({ token: TContainer, useValue: this });
+        this.register({ token: Container, useValue: this });
     }
 
     public register(provider: RegistrationProvider|RegistrationProvider[]): void {

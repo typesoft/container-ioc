@@ -1,8 +1,8 @@
-import { Container, TContainer, Injectable } from 'container-ioc';
+import { Container, Injectable } from 'container-ioc';
 
 const container = new Container();
 
-@Injectable([TContainer])
+@Injectable([Container])
 class Builder {
     constructor(container) {}
 }
