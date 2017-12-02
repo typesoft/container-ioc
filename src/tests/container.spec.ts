@@ -358,15 +358,14 @@ describe('Container', () => {
             });
 
             it('should resolve container instance when injected into class Literal', () => {
-                // arrange
                 @Injectable()
                 class TestClass {
                     constructor(@Inject(TContainer) public a: IContainer) {}
                 }
+
                 container.register({ token: TestClass, useClass: TestClass });
-                // act
                 const actual = container.resolve(TestClass);
-                // assert
+
                 expect(actual).to.be.ok;
                 expect(actual.a).to.be.ok;
                 expect(actual.a).to.equal(container);
@@ -466,9 +465,8 @@ describe('Container', () => {
         });
 
         it('should register itself for injection', () => {
-            // arrange, act
             const actual = container.resolve(TContainer);
-            // assert
+
             expect(actual).to.be.ok;
             expect(actual).to.equal(container);
         });
