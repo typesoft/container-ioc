@@ -25,14 +25,8 @@ export class Container implements IContainer {
     }
 
     public register(provider: RegistrationProvider|RegistrationProvider[]): void {
-        provider = this.nornalizeProvider(provider);
-
-        if (Array.isArray(provider)) {
-            this.registerAll(<RegistrationProvider[]> provider);
-        } else {
-            provider = this.nornalizeProvider(provider);
-            this.registerOne(<IProvider> provider);
-        }
+        const normalizedProvider = this.normalizeProvider(provider);
+        this.registerAll(normalizedProvider);
     }
 
     public resolve(token: ProviderToken): IInjectionInstance {
@@ -77,11 +71,11 @@ export class Container implements IContainer {
         return instance;
     }
 
-    private registerAll(providers: RegistrationProvider[]): void {
+    private registerAll(providers: IProvider[]): void {
         providers.forEach((p: IProvider) => this.registerOne(p));
     }
 
-    private registerOne(provider: IProvider) {
+    private registerOne(provider: IProvider): void {
         const registryData: IRegistryData = new RegistryData();
 
         if (provider.useValue) {
@@ -147,15 +141,10 @@ export class Container implements IContainer {
         }
     }
 
-    private nornalizeProvider(provider: RegistrationProvider|RegistrationProvider[]): IProvider {
-        let normalizedProvider: any;
-
-        if (Array.isArray(provider)) {
-            normalizedProvider = provider.map<IProvider>((p: IProvider|IConstructor) => this.normalizeSingleProvider(p));
-        } else {
-            normalizedProvider = this.normalizeSingleProvider(provider);
-        }
-        return normalizedProvider;
+    private normalizeProvider(provider: RegistrationProvider|RegistrationProvider[]): IProvider[] {
+        return Array.isArray(provider)
+            ? provider.map(p => this.normalizeSingleProvider(p))
+            : [ this.normalizeSingleProvider(provider) ];
     }
 
     private normalizeSingleProvider(provider: RegistrationProvider): IProvider {
