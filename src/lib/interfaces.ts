@@ -9,11 +9,20 @@ export enum LifeTime {
 
 export interface IProvider {
     token: ProviderToken;
-    useClass?: IConstructor;
-    useValue?: any;
-    useFactory?: any;
-    inject?: ProviderToken[];
     lifeTime?: LifeTime;
+}
+
+export interface IProvider {
+    useValue?: any;
+}
+
+export interface IProvider {
+    useClass?: IConstructor;    
+}
+
+export interface IProvider {
+    useFactory?: any;
+    inject?: ProviderToken[];  
 }
 
 export interface IInjectionMd {
