@@ -4,6 +4,7 @@ import { Container } from '../lib/index';
 import 'mocha';
 import { expect } from 'chai';
 import { Inject, Injectable } from '../lib/decorators';
+import { RegistrationProvider } from '../lib/interfaces';
 
 /* tslint:disable: no-unused-expression max-classes-per-file*/
 
@@ -30,6 +31,23 @@ describe('Decorators', () => {
             container.register([providerA, providerB]);
 
             const instanceB = container.resolve('IB');
+
+            expect(instanceB.a).to.be.instanceOf(A);
+        });
+
+        it('should inject dependency in to the constructor of a resolved class wihout @Inject keyword', () => {
+
+            @Injectable()
+            class A { }
+
+            @Injectable()
+            class B {
+                constructor(private a: A) { }
+            }
+
+            container.register([A, B]);
+
+            const instanceB = container.resolve(B);
 
             expect(instanceB.a).to.be.instanceOf(A);
         });

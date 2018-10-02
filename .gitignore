@@ -5,3 +5,4 @@ src/**/*.js*
 dist
 usage.js
 CURRENT-CHANGELOG.txt
+yarn.lock
