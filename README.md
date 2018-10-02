@@ -209,6 +209,21 @@ container.register([
     { token: App, useClass: App }
 ]);
 ```
+In such case it is redundant to use `Inject()` decorator, dependency will be injected automatically.
+```typescript
+@Injectable()
+class AppService {
+    constructor(private http: HttpService) {} // instead of @Inject(HttpService) private http: HttpService
+}
+
+@Injectable()
+class HttpService {
+    
+}
+
+container.register([HttpService, AppService])
+```
+
 
 ## Contribution
 Become a contributor to this project. Feel free to submit an [issue](https://github.com/thohoh/container-ioc/issues) or a pull request.
