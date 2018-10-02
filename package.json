@@ -58,6 +58,7 @@
     "gulp-tslint": "8.1.2",
     "gulp-typescript": "3.2.2",
     "mocha": "3.5.3",
+    "reflect-metadata": "^0.1.12",
     "tslint": "5.7.0",
     "tslint-microsoft-contrib": "5.0.1",
     "typescript": "2.5.3"
