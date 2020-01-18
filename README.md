@@ -4,6 +4,9 @@
  * Added "Launch Test" to Visual Studio Code debug dropdown
  * Added verbose_test - shows test ran and status
 
+## Usage
+Invoke from Visual Studio Code debug and run dropdown list [Launch Test]
+or launch via gulp command line:
  <pre>
     npm i
     gulp verbose_test
