@@ -6,6 +6,7 @@ export interface IContainerOptions {
 }
 
 export interface IContainer {    
+
     register(provider: RegistrationProvider|RegistrationProvider[]): void;
 
     resolve(token: ProviderToken): IInjectionInstance;
