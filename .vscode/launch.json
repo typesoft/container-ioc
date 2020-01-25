@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Test",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "npm test",        
+        "url": "http://www.adventuresontheedge.net/files/automatedtesting.png",
+        "webRoot": "${workspaceFolder}"
+      }
+    ]
+  }

@@ -1,5 +1,21 @@
-![alt text](http://abcselfstorageperth.com.au/wp-content/uploads/2014/08/icon-container-storage1.png)
+## BillKrat Fork
+ * Upgraded gulp from 3.9.1 to 4.0.2
+ * Refactored gulpfile.js for 4.0.2
+ * Added "Launch Test" to Visual Studio Code debug dropdown
+ * Added verbose_test - shows test ran and status
 
+## Usage
+Invoke from Visual Studio Code debug and run dropdown list [Launch Test]
+or launch via gulp command line:
+ <pre>
+    npm i
+    gulp verbose_test
+      - OR -
+    gulp test
+ </pre>
+
+ * Development on fork completed.  To be continued in [BillKrat/AngularMvmVm](https://github.com/BillKrat/AngularMvpVm) project
+<hr>
 
 ## **container-ioc** 
 is a [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) / [Inversion of Control (IoC) container](http://martinfowler.com/articles/injection.html) package for Javascript and Node.js applications powered by Typescript . It manages the dependencies between classes, so that applications stay easy to change and maintain as they grow.
